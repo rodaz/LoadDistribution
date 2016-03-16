@@ -8,7 +8,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Diit.EVM.controllers.AuthControl">
    <children>
       <Label layoutX="38.0" layoutY="28.0" text="Авторизация">
@@ -26,12 +25,12 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Button layoutX="243.0" layoutY="270.0" mnemonicParsing="false" onAction="#enterAuth" prefHeight="48.0" prefWidth="201.0" text="Войти">
+      <Button defaultButton="true" layoutX="243.0" layoutY="270.0" mnemonicParsing="false" onAction="#enterAuth" prefHeight="48.0" prefWidth="201.0" text="Войти">
          <font>
             <Font size="22.0" />
          </font>
       </Button>
-      <Button focusTraversable="false" layoutX="38.0" layoutY="270.0" mnemonicParsing="false" onAction="#cancelAuth" prefHeight="48.0" prefWidth="108.0" text="Отмена">
+      <Button cancelButton="true" focusTraversable="false" layoutX="38.0" layoutY="270.0" mnemonicParsing="false" onAction="#cancelAuth" prefHeight="48.0" prefWidth="108.0" text="Отмена">
          <font>
             <Font size="22.0" />
          </font>
@@ -46,6 +45,7 @@
             <Font name="Calibri" size="26.0" />
          </font>
       </TextField>
+      <Label layoutX="437.0" layoutY="20.0" prefHeight="98.0" prefWidth="101.0" text="egoroff   root&#10;ostap   user1&#10;samkov   user2&#10;" />
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

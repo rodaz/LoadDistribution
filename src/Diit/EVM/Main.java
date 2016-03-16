@@ -20,13 +20,12 @@ public class Main extends Application{
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("view/auth.fxml"));
-        Parent fxmlMain = fxmlLoader.load();
-        AuthControl mainControl = fxmlLoader.getController();
-        mainControl.setMainStage(primaryStage);
-        //mainControl.closeConn();
+        Parent fxmlAuth = fxmlLoader.load();
+        AuthControl authControl = fxmlLoader.getController();
+        authControl.setAuthStage(primaryStage);
 
         primaryStage.setTitle("Auth");
-        primaryStage.setScene(new Scene(fxmlMain, 552, 362));
+        primaryStage.setScene(new Scene(fxmlAuth, 552, 362));
         primaryStage.show();
     }
 }

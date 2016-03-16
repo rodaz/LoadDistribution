@@ -278,4 +278,9 @@ public class LecturersLoad {
     public void setDisciplineName(String disciplineName) {
         this.disciplineName.set(disciplineName);
     }
+
+    @Override
+    public String toString() {
+        return this.getDisciplineName();
+    }
 }

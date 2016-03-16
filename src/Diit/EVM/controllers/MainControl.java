@@ -4,9 +4,11 @@ import Diit.EVM.models.DbWorker;
 import Diit.EVM.objects.Discipline;
 import Diit.EVM.objects.Lecturer;
 import Diit.EVM.objects.LecturersLoad;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -31,6 +33,8 @@ public class MainControl {
     private Button btnDisc;
     @FXML
     private Pane pnHome;
+    @FXML
+    private Label lblUserName;
 
     TableView<Lecturer> tableOfLecturers = new TableView<>();
     TableView<Discipline> tableOfDisciplines = new TableView<>();
@@ -42,7 +46,11 @@ public class MainControl {
     private Stage mainStage;
     private Lecturer selectedLecturer;
     private Discipline selectedDiscipline;
-    private Button btnGoHome = new Button();
+    private String userName;
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public void setMainStage(Stage mainStage) {this.mainStage = mainStage;}
 
@@ -50,8 +58,23 @@ public class MainControl {
     private void initialize(){
         //dbWorker.getLecturersLoadFromDB();
         initListeners();
-    }
+        /**
+         * Имя лектора отображаем.
+        */
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                lblUserName.setText(userName);
+            }
+        });
+        Cell<String> cell = new Cell<>();
+        cell.getItem();
 
+    }
+    /**
+     * Анонимный вызов абстрактного класса.
+     * Для возможности редактирования данных прямо в таблице.
+     */
     StringConverter<Integer> sc = new StringConverter<Integer>() {
         @Override
         public String toString(Integer t) {
@@ -63,36 +86,46 @@ public class MainControl {
             return Integer.parseInt(string);
         }
     };
-
+    /**
+     * Отображает лист со всеми лекторами.
+     */
     public void viewLect(ActionEvent actionEvent){
-        dbWorker.getLecturersFromDB();
-        listOfLecturers.setItems(dbWorker.lecturers);
-        pane.setCenter(listOfLecturers);
-        btnLect.setVisible(true);
-        btnDisc.setVisible(false);
-        pane.setBottom(btnGoHome);
-        btnGoHome.setText("<---");
+        dbWorker.getLecturersFromDB();  //считывает базу данных лекторов
+        listOfLecturers.setItems(dbWorker.lecturers);   //помещает список лекторов в лист
+        pane.setCenter(listOfLecturers);    //лист устанавливаем в корневой контейнер
+        btnLect.setVisible(true);   //отображаем кнопку выбора лектора
+        btnDisc.setVisible(false);  //скрываем кнопку выбора дисциплины
     }
-
+    /**
+     * Отображает лист со всеми дисциплинами
+     */
     public void viewDisc(ActionEvent actionEvent){
         dbWorker.getDisciplinesFromDB();
         listOfDisciplines.setItems(dbWorker.disciplines);
         pane.setCenter(listOfDisciplines);
         btnDisc.setVisible(true);
         btnLect.setVisible(false);
-        pane.setBottom(btnGoHome);
     }
-
+    /**
+     * Обработчик нажатия на кнопку выбора лектора
+     * todo NPE(NullPointerException)
+     */
     public void choiseLect(ActionEvent actionEvent){
-        selectedLecturer = listOfLecturers.getSelectionModel().getSelectedItem();
+        selectedLecturer = listOfLecturers.getSelectionModel().getSelectedItem(); //определяем выбранного лектора
         hasSelectLect();
     }
-
+    /**
+     * Обработчик нажатия на кнопку выбора дисциплины
+     * todo NPE
+     */
     public void choiseDisc(ActionEvent actionEvent){
         selectedDiscipline = listOfDisciplines.getSelectionModel().getSelectedItem();
         hasSelectDisc();
     }
-
+    /**
+     * Установка слушателей на двойной клик по елементу листа
+     * todo НПЕ при двойном клике на пустую строку
+     */
     private void initListeners(){
         listOfLecturers.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -114,29 +147,39 @@ public class MainControl {
         });
 
     }
-
+    /**
+     * Отображение таблицы нагрузки лекторов
+     */
     private void hasSelectLect() {
-        /*dbWorker.getDisciplinesFromDB();
+        /* Собственно, раньше отображало таблицу с всеми дисциплинами
+        dbWorker.getDisciplinesFromDB();
         if (tableOfDisciplines.getItems().size() == 0) {
             createTableOfDisciplines();
         }
         pane.setCenter(tableOfDisciplines);
         */
-        dbWorker.getLecturersLoadFromDB(selectedLecturer);
-        if (tableOfLoad.getItems().size() == 0){
-            createTableOfLoad();
+        dbWorker.getLecturersLoadFromDB(selectedLecturer); // нагрузка с базы данных по выбранному лектору
+        if (tableOfLoad.getItems().size() == 0){ //если не создана ещё таблица нагрузки
+            createTableOfLoad(); //создаем таблицу нагрузки
         }
-        pane.setCenter(tableOfLoad);
+        pane.setCenter(tableOfLoad); //таблицу нагрузки помещаем в корневой контейнер
+        btnLect.setVisible(false); //скрываем кнопку выбора
     }
 
+    /**
+     * Отображение таблицы всех лекторов(пока всех, в будущем только имеющих выбранную дисциплину)
+     */
     private void hasSelectDisc(){
         dbWorker.getLecturersFromDB();
         if (tableOfLecturers.getItems().size() == 0){
             createTableOfLecturers();
         }
         pane.setCenter(tableOfLecturers);
+        btnDisc.setVisible(false);  //скрываем кнопку выбора
     }
-
+    /**
+     * Создание таблицы лекторов. Только для теста.
+     */
     private void createTableOfLecturers() {
         TableColumn<Lecturer, String> lecturerNameCol = new TableColumn<>("ФИО");
         lecturerNameCol.setCellValueFactory(new PropertyValueFactory("lecturerName"));
@@ -152,7 +195,9 @@ public class MainControl {
         tableOfLecturers.getColumns().setAll(lecturerNameCol, lecturerRateCol, rankCol, remarkCol);
         //tableOfLecturers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
-
+    /**
+     * @deprecated Тут создаем таблицу дисциплин.
+     */
     private void createTableOfDisciplines(){
         TableColumn<Discipline, String> disciplineNameCol = new TableColumn<>("Название");
         disciplineNameCol.setCellValueFactory(new PropertyValueFactory("disciplineName"));
@@ -193,7 +238,9 @@ public class MainControl {
                 hourIndCol, hourModCol, remarkCol);
         //tableOfDisciplines.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
-
+    /**
+     * Создание таблицы нагрузки
+     */
     private void createTableOfLoad(){
 
         //Table Column create ----------------------------------------------------------------
@@ -265,7 +312,11 @@ public class MainControl {
                 hourIndCol, hourModCol, remarkCol);
 
     }
-
+    /**
+     * Вешаем слушатель закрытия окна.
+     * Что-бы при закрытии закрывалось соединение с БД.
+     * Отдельно от других слушателей из-за NullPointerExcept.
+     */
     public void closeConn() {
         mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
