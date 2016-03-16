@@ -1,5 +1,6 @@
 package Diit.EVM;
 
+import Diit.EVM.controllers.AuthControl;
 import Diit.EVM.controllers.MainControl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,16 +19,14 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("view/main.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("view/auth.fxml"));
         Parent fxmlMain = fxmlLoader.load();
-        MainControl mainControl = fxmlLoader.getController();
+        AuthControl mainControl = fxmlLoader.getController();
         mainControl.setMainStage(primaryStage);
-        mainControl.closeConn();
+        //mainControl.closeConn();
 
-        primaryStage.setTitle("DIIT");
-        primaryStage.setMinWidth(600);
-        primaryStage.setMinHeight(450);
-        primaryStage.setScene(new Scene(fxmlMain, 500, 330));
+        primaryStage.setTitle("Auth");
+        primaryStage.setScene(new Scene(fxmlMain, 552, 362));
         primaryStage.show();
     }
 }

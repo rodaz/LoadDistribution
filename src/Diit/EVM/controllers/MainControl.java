@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -28,6 +29,8 @@ public class MainControl {
     private Button btnLect;
     @FXML
     private Button btnDisc;
+    @FXML
+    private Pane pnHome;
 
     TableView<Lecturer> tableOfLecturers = new TableView<>();
     TableView<Discipline> tableOfDisciplines = new TableView<>();
@@ -39,6 +42,7 @@ public class MainControl {
     private Stage mainStage;
     private Lecturer selectedLecturer;
     private Discipline selectedDiscipline;
+    private Button btnGoHome = new Button();
 
     public void setMainStage(Stage mainStage) {this.mainStage = mainStage;}
 
@@ -66,6 +70,8 @@ public class MainControl {
         pane.setCenter(listOfLecturers);
         btnLect.setVisible(true);
         btnDisc.setVisible(false);
+        pane.setBottom(btnGoHome);
+        btnGoHome.setText("<---");
     }
 
     public void viewDisc(ActionEvent actionEvent){
@@ -74,6 +80,7 @@ public class MainControl {
         pane.setCenter(listOfDisciplines);
         btnDisc.setVisible(true);
         btnLect.setVisible(false);
+        pane.setBottom(btnGoHome);
     }
 
     public void choiseLect(ActionEvent actionEvent){

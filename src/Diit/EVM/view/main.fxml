@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -17,7 +18,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Редактирование">
             <items>
-              <MenuItem mnemonicParsing="false" text="В разработке" />
+              <MenuItem mnemonicParsing="false" text="Печать" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="В разработке">
@@ -44,4 +45,20 @@
          </children>
       </HBox>
    </bottom>
+   <center>
+      <Pane fx:id="pnHome" prefHeight="205.0" prefWidth="339.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button focusTraversable="false" layoutX="40.0" layoutY="57.0" mnemonicParsing="false" onAction="#viewLect" prefHeight="89.0" prefWidth="176.0" text="Отобразить список преподавателей" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
+            <Button focusTraversable="false" layoutX="285.0" layoutY="58.0" mnemonicParsing="false" onAction="#viewDisc" prefHeight="91.0" prefWidth="176.0" text="Отобразить список дисциплин" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+   </center>
 </BorderPane>
