@@ -10,6 +10,7 @@ public class LecturersLoad {
     private SimpleIntegerProperty lecturersLoadId;
     private SimpleIntegerProperty learningYearId;
     private SimpleIntegerProperty lecturerId;
+    private SimpleStringProperty lecturerName;
     private SimpleIntegerProperty disciplineId;
     private SimpleStringProperty disciplineName;
     private SimpleIntegerProperty hourLect;
@@ -27,13 +28,14 @@ public class LecturersLoad {
     private SimpleIntegerProperty hourMod;
     private SimpleStringProperty remark;
 
-    public LecturersLoad(int lecturersLoadId, int learningYearId, int lecturerId, int disciplineId, String disciplineName,
+    public LecturersLoad(int lecturersLoadId, int learningYearId, int lecturerId, String lecturerName, int disciplineId, String disciplineName,
                          int hourLect, int hourLab, int hourPracW, int hourCons, int hourCour, int hourRev, int hourCred,
                          int hourExam, int hourPrac, int hourThes, int hourGrad, int hourInd, int hourMod, String remark) {
         this.disciplineId = new SimpleIntegerProperty(disciplineId);
         this.learningYearId = new SimpleIntegerProperty(learningYearId);
         this.lecturersLoadId = new SimpleIntegerProperty(lecturersLoadId);
         this.lecturerId = new SimpleIntegerProperty(lecturerId);
+        this.lecturerName = new SimpleStringProperty(lecturerName);
         this.disciplineName = new SimpleStringProperty(disciplineName);
         this.hourLect = new SimpleIntegerProperty(hourLect);
         this.hourLab = new SimpleIntegerProperty(hourLab);
@@ -277,6 +279,18 @@ public class LecturersLoad {
 
     public void setDisciplineName(String disciplineName) {
         this.disciplineName.set(disciplineName);
+    }
+
+    public String getLecturerName() {
+        return lecturerName.get();
+    }
+
+    public SimpleStringProperty lecturerNameProperty() {
+        return lecturerName;
+    }
+
+    public void setLecturerName(String lecturerName) {
+        this.lecturerName.set(lecturerName);
     }
 
     @Override

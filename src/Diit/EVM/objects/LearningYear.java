@@ -152,4 +152,9 @@ public class LearningYear {
     public void setRemark(String remark) {
         this.remark.set(remark);
     }
+
+    @Override
+    public String toString() {
+        return getInterval();
+    }
 }

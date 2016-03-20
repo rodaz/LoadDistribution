@@ -65,10 +65,10 @@ public class AuthControl {
         dbWorker.getUsersFromDB();
 
         for (UserAuth user : dbWorker.userAuthList){
-            if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
+            //if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
                 createMain(user.getName());
-            //break;
-            }
+            break;
+            //}
         }
     }
     /**

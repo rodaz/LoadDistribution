@@ -1,9 +1,6 @@
 package Diit.EVM.models;
 
-import Diit.EVM.objects.Discipline;
-import Diit.EVM.objects.Lecturer;
-import Diit.EVM.objects.LecturersLoad;
-import Diit.EVM.objects.UserAuth;
+import Diit.EVM.objects.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -27,6 +24,7 @@ public final class DbWorker {
     public ObservableList<Lecturer> lecturers = FXCollections.observableArrayList();
     public ObservableList<Discipline> disciplines = FXCollections.observableArrayList();
     public ObservableList<LecturersLoad> lecturersLoads = FXCollections.observableArrayList();
+    public ObservableList<LearningYear> learningYears = FXCollections.observableArrayList();
     public List<UserAuth> userAuthList = new ArrayList<>();
 
     private DbWorker(){
@@ -44,11 +42,13 @@ public final class DbWorker {
         }
         return instance;
     }
-
-    public void getDisciplinesFromDB(){
+    /**
+     * Дисциплины достаем с БД
+    */
+    public void getDisciplinesFromDB(LearningYear learningYear){
         try {
             stmt = conn.createStatement();
-            res = stmt.executeQuery("SELECT * FROM Discipline");
+            res = stmt.executeQuery("SELECT * FROM Discipline WHERE Discipline.learnYearId = " + learningYear.getLearningYearId());
             disciplines.clear();
             while (res.next()){
                 disciplines.add(new Discipline(res.getInt(1), res.getInt(2), res.getString(3), res.getInt(4),
@@ -80,15 +80,36 @@ public final class DbWorker {
         }
     }
 
-    public void getLecturersLoadFromDB(Lecturer selectedLecturer) {
+    public void getLecturersLoadFromDB(Lecturer selectedLecturer, LearningYear selectedYear) {
         try {
             stmt = conn.createStatement();
             res = stmt.executeQuery("SELECT * FROM LecturersLoad JOIN Discipline ON LecturersLoad.discipId=Discipline.discipId "+
-                                "WHERE LecturersLoad.lectId = "+selectedLecturer.getLecturerId());
+                                "WHERE LecturersLoad.lectId = "+selectedLecturer.getLecturerId()+" AND LecturersLoad.learnYearId="+
+                                selectedYear.getLearningYearId());
             lecturersLoads.clear();
             while (res.next()){
-                lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), res.getInt(4),
+                lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), null, res.getInt(4),
                         res.getString(21), res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9),
+                        res.getInt(10), res.getInt(11), res.getInt(12), res.getInt(13), res.getInt(14), res.getInt(15),
+                        res.getInt(16), res.getInt(17), res.getString(18)));
+            }
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void getLecturersLoadFromDB(Discipline selectedDiscipline, LearningYear selectedYear) {
+        try {
+            stmt = conn.createStatement();
+            res = stmt.executeQuery("SELECT * FROM LecturersLoad JOIN Lecturer ON LecturersLoad.lectId=Lecturer.lectId "+
+                    "WHERE LecturersLoad.discipId = "+selectedDiscipline.getDisciplineId()+" AND LecturersLoad.learnYearId="+
+                    selectedYear.getLearningYearId());
+            lecturersLoads.clear();
+            while (res.next()){
+                lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), res.getString(21), res.getInt(4),
+                        null, res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9),
                         res.getInt(10), res.getInt(11), res.getInt(12), res.getInt(13), res.getInt(14), res.getInt(15),
                         res.getInt(16), res.getInt(17), res.getString(18)));
             }
@@ -106,6 +127,22 @@ public final class DbWorker {
             userAuthList.clear();
             while (res.next()){
                 userAuthList.add(new UserAuth(res.getString(2), res.getString(3), res.getString(4)));
+            }
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void getLearningYearsFromDB(){
+        try {
+            stmt = conn.createStatement();
+            res = stmt.executeQuery("SELECT * FROM LearningYear");
+            learningYears.clear();
+            while (res.next()){
+                learningYears.add(new LearningYear(res.getInt(1), res.getString(2), res.getInt(3), res.getInt(4),
+                        res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getString(9), res.getString(10)));
             }
         } catch (SQLException e) {e.printStackTrace();}
         finally {
