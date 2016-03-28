@@ -3,6 +3,7 @@ package Diit.EVM.controllers;
 import Diit.EVM.models.DbWorker;
 import Diit.EVM.objects.LearningYear;
 import Diit.EVM.objects.Lecturer;
+import Diit.EVM.util.Convert;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -42,7 +43,7 @@ public class AddLectControl {
     public void addNewLect(){
         LearningYear year = choYear.getValue();
         String rank = (String) choRank.getSelectionModel().getSelectedItem();
-        Lecturer lecturer = new Lecturer(0,year.getLearningYearId(), fldName.getText(), Double.parseDouble(fldRate.getText()),
+        Lecturer lecturer = new Lecturer(0,year.getLearningYearId(), fldName.getText(), Convert.rendD(fldRate.getText()),
                 rank, fldRe.getText());
         dbWorker.addLectToDB(lecturer);
         dbWorker.lecturers.add(lecturer);

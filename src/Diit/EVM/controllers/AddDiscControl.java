@@ -3,6 +3,7 @@ package Diit.EVM.controllers;
 import Diit.EVM.models.DbWorker;
 import Diit.EVM.objects.Discipline;
 import Diit.EVM.objects.LearningYear;
+import Diit.EVM.util.Convert;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -65,20 +66,20 @@ public class AddDiscControl {
         Discipline discipline = new Discipline( 0,
             learningYear.getLearningYearId(),
             fldDisc.getText(),
-            Integer.parseInt(fldGroup.getText()),
-            Integer.parseInt(fldLect.getText()),
-            Integer.parseInt(fldLab.getText()),
-            Integer.parseInt(fldPracW.getText()),
-            Integer.parseInt(fldCons.getText()),
-            Integer.parseInt(fldCour.getText()),
-            Integer.parseInt(fldRev.getText()),
-            Integer.parseInt(fldCred.getText()),
-            Integer.parseInt(fldExam.getText()),
-            Integer.parseInt(fldPrac.getText()),
-            Integer.parseInt(fldThes.getText()),
-            Integer.parseInt(fldGrad.getText()),
-            Integer.parseInt(fldInd.getText()),
-            Integer.parseInt(fldMod.getText()),
+            Convert.rend(fldGroup.getText()),
+            Convert.rend(fldLect.getText()),
+            Convert.rend(fldLab.getText()),
+            Convert.rend(fldPracW.getText()),
+            Convert.rend(fldCons.getText()),
+            Convert.rend(fldCour.getText()),
+            Convert.rend(fldRev.getText()),
+            Convert.rend(fldCred.getText()),
+            Convert.rend(fldExam.getText()),
+            Convert.rend(fldPrac.getText()),
+            Convert.rend(fldThes.getText()),
+            Convert.rend(fldGrad.getText()),
+            Convert.rend(fldInd.getText()),
+            Convert.rend(fldMod.getText()),
             fldRe.getText()
         );
         dbWorker.addDiscToDB(discipline);

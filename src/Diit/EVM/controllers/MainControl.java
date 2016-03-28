@@ -64,6 +64,8 @@ public class MainControl {
     private Button btnDelLect;
     @FXML
     private Button btnDelLoad;
+    @FXML
+    private Button btnRest;
 
     TableView<Lecturer> tableOfLecturers = new TableView<>();
     TableView<Discipline> tableOfDisciplines = new TableView<>();
@@ -164,6 +166,7 @@ public class MainControl {
         dbWorker.getLecturersFromDB();  //считывает базу данных лекторов
         listOfLecturers.setItems(dbWorker.lecturers);   //помещает список лекторов в лист
         pane.setCenter(listOfLecturers);    //лист устанавливаем в корневой контейнер
+        hideAllButtons();
     }
     /**
      * Отображает лист с дисциплинами за выбранный учебный год
@@ -172,6 +175,7 @@ public class MainControl {
         dbWorker.getDisciplinesFromDB(selectedYear);
         listOfDisciplines.setItems(dbWorker.disciplines);
         pane.setCenter(listOfDisciplines);
+        hideAllButtons();
     }
 
     /**
@@ -194,6 +198,7 @@ public class MainControl {
                 if (event.getClickCount() == 2){
                     selectedDiscipline = listOfDisciplines.getSelectionModel().getSelectedItem();
                     tableViewLoadForDiscipline();
+                    mainStage.setTitle(selectedYear+" "+selectedDiscipline);
                 }
             }
         });
@@ -204,12 +209,19 @@ public class MainControl {
                     selectedYear = listOfLearningYears.getSelectionModel().getSelectedItem();
                     viewDisc();
                     mnMain.setDisable(false);
+                    btnRest.setDisable(false);
                     mainStage.setTitle(selectedYear.toString());
                     hideAllButtons();
                 }
             }
         });
 
+    }
+
+    public  void restart(){
+        AuthControl authControl = new AuthControl();
+        authControl.createMain(userName);
+        mainStage.close();
     }
 
     /**
@@ -264,6 +276,7 @@ public class MainControl {
             createTableOfLoadDisc();
         }
         pane.setCenter(tableOfLoadDisc);
+        hideAllButtons();
         showLoadButtons();
     }
     /**
@@ -296,7 +309,6 @@ public class MainControl {
         tableOfLecturers.setItems(dbWorker.lecturers);
         tableOfLecturers.setEditable(true);
         tableOfLecturers.getColumns().setAll(lecturerNameCol, lecturerRateCol, rankCol, remarkCol);
-        //tableOfLecturers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     /**
      * Тут создаем таблицу дисциплин.
@@ -356,7 +368,6 @@ public class MainControl {
         tableOfDisciplines.getColumns().setAll(disciplineNameCol, numGroupCol, hourLectCol, hourLabCol, hourPracWCol,
                 hourConsCol, hourCourCol, hourRevCol, hourCredCol, hourExamCol, hourPracCol, hourThesCol, hourGradCol,
                 hourIndCol, hourModCol, remarkCol);
-        //tableOfDisciplines.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     /**
      * Создание таблицы нагрузки преподавателей
@@ -430,7 +441,6 @@ public class MainControl {
         tableOfLoadLect.getColumns().setAll(disciplineNameCol, hourLectCol, hourLabCol, hourPracWCol,
                 hourConsCol, hourCourCol, hourRevCol, hourCredCol, hourExamCol, hourPracCol, hourThesCol, hourGradCol,
                 hourIndCol, hourModCol, remarkCol);
-
     }
     /**
      * Создание таблицы нагрузки дисциплин
@@ -561,6 +571,8 @@ public class MainControl {
         addDiscStage.initModality(Modality.WINDOW_MODAL);
         addDiscStage.initOwner(mainStage);
         addDiscStage.showAndWait();
+        tableViewDisciplines();
+        tableOfDisciplines.refresh();
     }
 
     public void btnAddLectAction() {
@@ -580,6 +592,8 @@ public class MainControl {
         addLectStage.initModality(Modality.WINDOW_MODAL);
         addLectStage.initOwner(mainStage);
         addLectStage.showAndWait();
+        tableViewLecturers();
+        tableOfLecturers.refresh();
     }
 
     public void btnAddLoadAction() {
@@ -627,6 +641,8 @@ public class MainControl {
     public void btnSaveDiscAction() {
         for (Discipline disc: dbWorker.disciplines) {
             dbWorker.delDiscFromDB(disc);
+        }
+        for (Discipline disc: dbWorker.disciplines) {
             dbWorker.addDiscToDB(disc);
         }
     }
@@ -634,6 +650,8 @@ public class MainControl {
     public void btnSaveLectAction() {
         for (Lecturer lect: dbWorker.lecturers){
             dbWorker.delLectFromDB(lect);
+        }
+        for (Lecturer lect: dbWorker.lecturers){
             dbWorker.addLectToDB(lect);
         }
     }
@@ -641,6 +659,8 @@ public class MainControl {
     public void btnSaveLoadAction() {
         for (LecturersLoad load: dbWorker.lecturersLoads){
             dbWorker.delLoadFromDB(load);
+        }
+        for (LecturersLoad load: dbWorker.lecturersLoads){
             dbWorker.addLoadToDB(load);
         }
     }

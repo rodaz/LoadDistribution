@@ -25,14 +25,14 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelEditYear" prefWidth="70.0" text="Отмена" GridPane.rowIndex="10">
-            <GridPane.margin>
-                <Insets left="80.0" />
-            </GridPane.margin>
-        </Button>
         <Button defaultButton="true" mnemonicParsing="false" onAction="#editYear" prefWidth="75.0" text="Сохранить" GridPane.columnIndex="1" GridPane.rowIndex="10">
             <GridPane.margin>
                 <Insets left="50.0" />
+            </GridPane.margin>
+        </Button>
+        <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelEditYear" prefWidth="70.0" text="Отмена" GridPane.rowIndex="10">
+            <GridPane.margin>
+                <Insets left="80.0" />
             </GridPane.margin>
         </Button>
         <Label text="Интервал" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
@@ -115,6 +115,11 @@
                 <Insets right="5.0" />
             </GridPane.margin>
         </TextField>
+        <CheckBox fx:id="chLoad" mnemonicParsing="false" prefHeight="17.0" prefWidth="4.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <GridPane.margin>
+                <Insets />
+            </GridPane.margin>
+        </CheckBox>
         <TextField fx:id="fldRe" GridPane.columnIndex="1" GridPane.rowIndex="9">
             <GridPane.margin>
                 <Insets right="5.0" />
@@ -133,10 +138,5 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <CheckBox fx:id="chLoad" mnemonicParsing="false" prefHeight="17.0" prefWidth="4.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
-            <GridPane.margin>
-                <Insets />
-            </GridPane.margin>
-        </CheckBox>
     </children>
 </GridPane>

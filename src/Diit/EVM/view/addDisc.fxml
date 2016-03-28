@@ -32,11 +32,6 @@
                 <Insets right="30.0" />
             </GridPane.margin>
         </Button>
-        <Button defaultButton="true" mnemonicParsing="false" onAction="#addNewDisc" prefWidth="70.0" text="Добавить" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="10">
-            <GridPane.margin>
-                <Insets right="80.0" />
-            </GridPane.margin>
-        </Button>
         <Label text="Экзамен" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets right="10.0" />
@@ -67,36 +62,6 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
-        <TextField fx:id="fldCred" GridPane.columnIndex="3" GridPane.rowIndex="1">
-            <GridPane.margin>
-                <Insets right="5.0" />
-            </GridPane.margin>
-        </TextField>
-        <TextField fx:id="fldExam" GridPane.columnIndex="3" GridPane.rowIndex="2">
-            <GridPane.margin>
-                <Insets right="5.0" />
-            </GridPane.margin>
-        </TextField>
-        <TextField fx:id="fldPrac" GridPane.columnIndex="3" GridPane.rowIndex="3">
-            <GridPane.margin>
-                <Insets right="5.0" />
-            </GridPane.margin>
-        </TextField>
-        <TextField fx:id="fldThes" GridPane.columnIndex="3" GridPane.rowIndex="4">
-            <GridPane.margin>
-                <Insets right="5.0" />
-            </GridPane.margin>
-        </TextField>
-        <TextField fx:id="fldGrad" GridPane.columnIndex="3" GridPane.rowIndex="5">
-            <GridPane.margin>
-                <Insets right="5.0" />
-            </GridPane.margin>
-        </TextField>
-        <TextField fx:id="fldInd" GridPane.columnIndex="3" GridPane.rowIndex="6">
-            <GridPane.margin>
-                <Insets right="5.0" />
-            </GridPane.margin>
-        </TextField>
         <Label prefHeight="17.0" prefWidth="197.0" text="новой дисциплины" GridPane.columnIndex="2">
             <font>
                 <Font name="System Bold" size="12.0" />
@@ -155,22 +120,57 @@
             <Insets right="10.0" />
          </GridPane.margin>
       </Label>
-      <ChoiceBox fx:id="choYear" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="fldDisc" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="fldGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextField fx:id="fldLect" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <TextField fx:id="fldLab" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <TextField fx:id="fldMod" GridPane.columnIndex="3" GridPane.rowIndex="7" />
       <Label text="Заметка" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin>
       </Label>
+      <ChoiceBox fx:id="choYear" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="fldDisc" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="fldGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="fldLect" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <TextField fx:id="fldLab" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <TextField fx:id="fldPracW" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <TextField fx:id="fldCour" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <TextField fx:id="fldRev" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <TextField fx:id="fldCons" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+        <TextField fx:id="fldCred" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets right="5.0" />
+            </GridPane.margin>
+        </TextField>
+        <TextField fx:id="fldExam" GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets right="5.0" />
+            </GridPane.margin>
+        </TextField>
+        <TextField fx:id="fldPrac" GridPane.columnIndex="3" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets right="5.0" />
+            </GridPane.margin>
+        </TextField>
+        <TextField fx:id="fldThes" GridPane.columnIndex="3" GridPane.rowIndex="4">
+            <GridPane.margin>
+                <Insets right="5.0" />
+            </GridPane.margin>
+        </TextField>
+        <TextField fx:id="fldGrad" GridPane.columnIndex="3" GridPane.rowIndex="5">
+            <GridPane.margin>
+                <Insets right="5.0" />
+            </GridPane.margin>
+        </TextField>
+        <TextField fx:id="fldInd" GridPane.columnIndex="3" GridPane.rowIndex="6">
+            <GridPane.margin>
+                <Insets right="5.0" />
+            </GridPane.margin>
+        </TextField>
+      <TextField fx:id="fldMod" GridPane.columnIndex="3" GridPane.rowIndex="7" />
       <TextField fx:id="fldRe" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+      <Button defaultButton="true" mnemonicParsing="false" onAction="#addNewDisc" prefWidth="70.0" text="Добавить" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="10">
+          <GridPane.margin>
+              <Insets right="80.0" />
+          </GridPane.margin>
+      </Button>
       <Label text="Лекции" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets right="10.0" />

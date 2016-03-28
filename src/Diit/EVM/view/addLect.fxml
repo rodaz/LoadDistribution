@@ -28,11 +28,6 @@
                 <Insets left="80.0" />
             </GridPane.margin>
         </Button>
-        <Button defaultButton="true" mnemonicParsing="false" onAction="#addNewLect" prefWidth="70.0" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="8">
-            <GridPane.margin>
-                <Insets left="50.0" />
-            </GridPane.margin>
-        </Button>
         <Label text="Учебный год" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets right="10.0" />
@@ -63,6 +58,7 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
+        <ChoiceBox fx:id="choYear" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <TextField fx:id="fldName" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets right="5.0" />
@@ -73,6 +69,7 @@
                 <Insets right="5.0" />
             </GridPane.margin>
         </TextField>
+        <ChoiceBox fx:id="choRank" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <TextField fx:id="fldHours" GridPane.columnIndex="1" GridPane.rowIndex="5">
             <GridPane.margin>
                 <Insets right="5.0" />
@@ -83,6 +80,11 @@
                 <Insets right="5.0" />
             </GridPane.margin>
         </TextField>
+        <Button defaultButton="true" mnemonicParsing="false" onAction="#addNewLect" prefWidth="70.0" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <GridPane.margin>
+                <Insets left="50.0" />
+            </GridPane.margin>
+        </Button>
         <Label prefHeight="17.0" prefWidth="197.0" text="нового преподавателя" GridPane.columnIndex="1">
             <font>
                 <Font name="System Bold" size="12.0" />
@@ -96,7 +98,5 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-      <ChoiceBox fx:id="choYear" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <ChoiceBox fx:id="choRank" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     </children>
 </GridPane>

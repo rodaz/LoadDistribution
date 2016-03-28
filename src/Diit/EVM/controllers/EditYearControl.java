@@ -2,6 +2,7 @@ package Diit.EVM.controllers;
 
 import Diit.EVM.models.DbWorker;
 import Diit.EVM.objects.LearningYear;
+import Diit.EVM.util.Convert;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -68,12 +69,12 @@ public class EditYearControl {
         Boolean bool = chLoad.isSelected();
         LearningYear upYear = new LearningYear(0,
                 fldInterval.getText(),
-                Double.parseDouble(fldQuanRate.getText()),
-                Integer.parseInt(fldAssist.getText()),
-                Integer.parseInt(fldSenior.getText()),
-                Integer.parseInt(fldDocent.getText()),
-                Integer.parseInt(fldProf.getText()),
-                Integer.parseInt(fldChief.getText()),
+                Convert.rendD(fldQuanRate.getText()),
+                Convert.rend(fldAssist.getText()),
+                Convert.rend(fldSenior.getText()),
+                Convert.rend(fldDocent.getText()),
+                Convert.rend(fldProf.getText()),
+                Convert.rend(fldChief.getText()),
                 bool.toString(),
                 fldRe.getText()
         );

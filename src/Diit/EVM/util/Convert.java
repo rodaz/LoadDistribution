@@ -2,12 +2,24 @@ package Diit.EVM.util;
 
 /**
  * Created by Alexey on 28.03.2016.
- * Пока в процессе разработке. Не используется.
+ *
+ * Класс для преобразования String в int и double.
+ * В отличии от стандартных методов при пустой строке возвращает 0.
  */
 public class Convert {
-    int faj = 15;
+    public static int rend(String str) {
+        if (str.equals("")) {
+            return 0;
+        } else {
+            return Integer.parseInt(str);
+        }
+    }
 
-    private void render() {
-        faj = Integer.parseInt("4");
+    public static double rendD(String str){
+        if (str.equals("")) {
+            return 0;
+        } else {
+            return Double.parseDouble(str);
+        }
     }
 }

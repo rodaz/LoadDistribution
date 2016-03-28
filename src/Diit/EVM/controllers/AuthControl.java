@@ -65,16 +65,16 @@ public class AuthControl {
         dbWorker.getUsersFromDB();
 
         for (UserAuth user : dbWorker.userAuthList){
-            if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
+            //if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
                 createMain(user.getName());
-            //break;
-            }
+            break;
+            //}
         }
     }
     /**
      * Создает главное окно c контроллером {@link MainControl}
      */
-    private void createMain(String userName) {
+    public void createMain(String userName) {
         mainStage = new Stage();
         try {
             fxmlLoader.setLocation(getClass().getResource("../view/main.fxml"));
@@ -87,6 +87,8 @@ public class AuthControl {
         mainStage.setTitle("EVM");
         mainStage.setScene(new Scene(fxmlMain, 600, 400));
         mainStage.show();
-        authStage.close();
+        if (authStage != null){
+            authStage.close();
+        }
     }
 }
