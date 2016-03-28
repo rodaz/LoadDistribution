@@ -24,7 +24,7 @@ public class Main extends Application{
         AuthControl authControl = fxmlLoader.getController();
         authControl.setAuthStage(primaryStage);
 
-        primaryStage.setTitle("Auth");
+        primaryStage.setTitle("Авторизация");
         primaryStage.setScene(new Scene(fxmlAuth, 552, 362));
         primaryStage.show();
     }

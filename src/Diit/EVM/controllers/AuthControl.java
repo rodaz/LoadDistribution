@@ -65,10 +65,10 @@ public class AuthControl {
         dbWorker.getUsersFromDB();
 
         for (UserAuth user : dbWorker.userAuthList){
-            //if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
+            if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
                 createMain(user.getName());
-            break;
-            //}
+            //break;
+            }
         }
     }
     /**
@@ -85,7 +85,7 @@ public class AuthControl {
         mainControl.setUserName(userName);
         mainControl.closeConn();
         mainStage.setTitle("EVM");
-        mainStage.setScene(new Scene(fxmlMain, 500, 330));
+        mainStage.setScene(new Scene(fxmlMain, 600, 400));
         mainStage.show();
         authStage.close();
     }

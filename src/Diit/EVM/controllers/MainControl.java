@@ -9,16 +9,21 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -82,9 +87,9 @@ public class MainControl {
 
     @FXML
     private void initialize(){
-        hideAllButtons();
-        viewYears();
-        initListeners();
+        hideAllButtons();   //скрываем все кнопки
+        viewYears();    //отображаем список годов
+        initListeners();    //инициализация слушателей
         /**
          * Имя лектора отображаем.
         */
@@ -199,6 +204,8 @@ public class MainControl {
                     selectedYear = listOfLearningYears.getSelectionModel().getSelectedItem();
                     viewDisc();
                     mnMain.setDisable(false);
+                    mainStage.setTitle(selectedYear.toString());
+                    hideAllButtons();
                 }
             }
         });
@@ -214,6 +221,7 @@ public class MainControl {
             createTableOfDisciplines();
         }
         pane.setCenter(tableOfDisciplines);
+        hideAllButtons();
         btnAddDisc.setVisible(true);
         btnSaveDisc.setVisible(true);
         btnDelDisc.setVisible(true);
@@ -228,6 +236,7 @@ public class MainControl {
             createTableOfLoadLect(); //создаем таблицу нагрузки
         }
         pane.setCenter(tableOfLoadLect); //таблицу нагрузки помещаем в корневой контейнер
+        hideAllButtons();
         showLoadButtons();
     }
 
@@ -240,6 +249,7 @@ public class MainControl {
             createTableOfLecturers();
         }
         pane.setCenter(tableOfLecturers);
+        hideAllButtons();
         btnAddLect.setVisible(true);
         btnSaveLect.setVisible(true);
         btnDelLect.setVisible(true);
@@ -515,51 +525,150 @@ public class MainControl {
     //Обработка нереального количества кнопок
     //***********************************************************************************************************
 
-    public void btnAddYearAction(ActionEvent actionEvent) {
-
+    public void btnAddYearAction() {
+        Stage addYearStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent fxmlAddYear = null;
+        AddYearControl addYearControl = null;
+        try {
+            fxmlLoader.setLocation(getClass().getResource("../view/addYear.fxml"));
+            fxmlAddYear = fxmlLoader.load();
+            addYearControl = fxmlLoader.getController();
+        } catch (IOException e) {e.printStackTrace();}
+        addYearControl.setAddYearStage(addYearStage);
+        addYearStage.setTitle("Добавить");
+        addYearStage.setScene(new Scene(fxmlAddYear, 400, 350));
+        addYearStage.setResizable(false);
+        addYearStage.initModality(Modality.WINDOW_MODAL);
+        addYearStage.initOwner(mainStage);
+        addYearStage.showAndWait();
     }
 
-    public void btnAddDiscAction(ActionEvent actionEvent) {
-
+    public void btnAddDiscAction() {
+        Stage addDiscStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent fxmlAddDisc = null;
+        AddDiscControl addDiscControl = null;
+        try {
+            fxmlLoader.setLocation(getClass().getResource("../view/addDisc.fxml"));
+            fxmlAddDisc = fxmlLoader.load();
+            addDiscControl = fxmlLoader.getController();
+        } catch (IOException e) {e.printStackTrace();}
+        addDiscControl.setAddDiscStage(addDiscStage);
+        addDiscStage.setTitle("Добавить");
+        addDiscStage.setScene(new Scene(fxmlAddDisc, 700, 400));
+        addDiscStage.setResizable(false);
+        addDiscStage.initModality(Modality.WINDOW_MODAL);
+        addDiscStage.initOwner(mainStage);
+        addDiscStage.showAndWait();
     }
 
-    public void btnAddLectAction(ActionEvent actionEvent) {
-
+    public void btnAddLectAction() {
+        Stage addLectStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent fxmlAddLect = null;
+        AddLectControl addLectControl = null;
+        try {
+            fxmlLoader.setLocation(getClass().getResource("../view/addLect.fxml"));
+            fxmlAddLect = fxmlLoader.load();
+            addLectControl = fxmlLoader.getController();
+        } catch (IOException e) {e.printStackTrace();}
+        addLectControl.setAddLectStage(addLectStage);
+        addLectStage.setTitle("Добавить");
+        addLectStage.setScene(new Scene(fxmlAddLect, 400, 350));
+        addLectStage.setResizable(false);
+        addLectStage.initModality(Modality.WINDOW_MODAL);
+        addLectStage.initOwner(mainStage);
+        addLectStage.showAndWait();
     }
 
-    public void btnAddLoadAction(ActionEvent actionEvent) {
-
+    public void btnAddLoadAction() {
+        Stage addLoadStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent fxmlAddLoad = null;
+        AddLoadControl addLoadControl = null;
+        try {
+            fxmlLoader.setLocation(getClass().getResource("../view/addLoad.fxml"));
+            fxmlAddLoad = fxmlLoader.load();
+            addLoadControl = fxmlLoader.getController();
+        } catch (IOException e) {e.printStackTrace();}
+        addLoadControl.setAddLoadStage(addLoadStage);
+        addLoadStage.setTitle("Добавить");
+        if (dbWorker.disciplines.size() == 0){
+            dbWorker.getDisciplinesFromDB(selectedYear);    //считываем список дисциплин, что-бы в ChoiceBox-e выбирать
+        }
+        addLoadStage.setScene(new Scene(fxmlAddLoad, 700, 400));
+        addLoadStage.setResizable(false);
+        addLoadStage.initModality(Modality.WINDOW_MODAL);
+        addLoadStage.initOwner(mainStage);
+        addLoadStage.showAndWait();
     }
 
-    public void btnSaveYearAction(ActionEvent actionEvent) {
-
+    public void btnSaveYearAction() {
+        Stage editStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent fxmlEditYear = null;
+        EditYearControl editYearControl = null;
+        try {
+            fxmlLoader.setLocation(getClass().getResource("../view/editYear.fxml"));
+            fxmlEditYear = fxmlLoader.load();
+            editYearControl = fxmlLoader.getController();
+        } catch (IOException e) {e.printStackTrace();}
+        editYearControl.setEditStage(editStage);
+        editYearControl.setLearningYear(listOfLearningYears.getSelectionModel().getSelectedItem());
+        editStage.setTitle("Редактировать");
+        editStage.setScene(new Scene(fxmlEditYear, 400, 350));
+        editStage.setResizable(false);
+        editStage.initModality(Modality.WINDOW_MODAL);
+        editStage.initOwner(mainStage);
+        editStage.showAndWait();
     }
 
-    public void btnSaveDiscAction(ActionEvent actionEvent) {
-
+    public void btnSaveDiscAction() {
+        for (Discipline disc: dbWorker.disciplines) {
+            dbWorker.delDiscFromDB(disc);
+            dbWorker.addDiscToDB(disc);
+        }
     }
 
-    public void btnSaveLectAction(ActionEvent actionEvent) {
-
+    public void btnSaveLectAction() {
+        for (Lecturer lect: dbWorker.lecturers){
+            dbWorker.delLectFromDB(lect);
+            dbWorker.addLectToDB(lect);
+        }
     }
 
-    public void btnSaveLoadAction(ActionEvent actionEvent) {
-
+    public void btnSaveLoadAction() {
+        for (LecturersLoad load: dbWorker.lecturersLoads){
+            dbWorker.delLoadFromDB(load);
+            dbWorker.addLoadToDB(load);
+        }
     }
 
-    public void btnDelYearAction(ActionEvent actionEvent) {
-
+    public void btnDelYearAction() {
+        LearningYear year = listOfLearningYears.getSelectionModel().getSelectedItem();
+        dbWorker.delYearFromDB(year);
+        dbWorker.learningYears.remove(year);
     }
 
-    public void btnDelDiscAction(ActionEvent actionEvent) {
-
+    public void btnDelDiscAction() {
+        Discipline disc = tableOfDisciplines.getSelectionModel().getSelectedItem();
+        dbWorker.delDiscFromDB(disc);
+        dbWorker.disciplines.remove(disc);
     }
 
-    public void btnDelLectAction(ActionEvent actionEvent) {
-
+    public void btnDelLectAction() {
+        Lecturer lect = tableOfLecturers.getSelectionModel().getSelectedItem();
+        dbWorker.delLectFromDB(lect);
+        dbWorker.lecturers.remove(lect);
     }
 
-    public void btnDelLoadAction(ActionEvent actionEvent) {
-
+    public void btnDelLoadAction() {
+        LecturersLoad load = tableOfLoadDisc.getSelectionModel().getSelectedItem();
+        if (load == null){
+            load = tableOfLoadLect.getSelectionModel().getSelectedItem();
+        }
+        dbWorker.delLoadFromDB(load);
+        dbWorker.lecturersLoads.remove(load);
     }
 }

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Diit.EVM.controllers.MainControl">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Diit.EVM.controllers.MainControl">
    <top>
       <MenuBar fx:id="mnMain" disable="true" BorderPane.alignment="CENTER">
         <menus>
@@ -44,7 +44,7 @@
             </Pane>
             <Pane prefHeight="59.0" prefWidth="98.0">
                <children>
-                  <Button fx:id="btnSaveYear" layoutX="35.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnSaveYearAction" text="Сохранить" />
+                  <Button fx:id="btnSaveYear" layoutX="35.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnSaveYearAction" text="Изменить" />
                   <Button fx:id="btnSaveDisc" layoutX="35.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnSaveDiscAction" text="Сохранить" />
                   <Button fx:id="btnSaveLect" layoutX="35.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnSaveLectAction" text="Сохранить" />
                   <Button fx:id="btnSaveLoad" layoutX="35.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnSaveLoadAction" text="Сохранить" />
@@ -63,7 +63,7 @@
             </Pane>
             <Label fx:id="lblUserName">
                <HBox.margin>
-                  <Insets left="235.0" top="78.0" />
+                  <Insets left="200.0" top="78.0" />
                </HBox.margin>
                <font>
                   <Font size="15.0" />

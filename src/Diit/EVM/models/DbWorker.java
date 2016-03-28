@@ -25,6 +25,8 @@ public final class DbWorker {
     public ObservableList<Discipline> disciplines = FXCollections.observableArrayList();
     public ObservableList<LecturersLoad> lecturersLoads = FXCollections.observableArrayList();
     public ObservableList<LearningYear> learningYears = FXCollections.observableArrayList();
+    public ObservableList<String> ranks = FXCollections.observableArrayList("Ассистент","Ст. преподаватель",
+            "Доцент","Профессор","Зав. кафедры");
     public List<UserAuth> userAuthList = new ArrayList<>();
 
     private DbWorker(){
@@ -151,5 +153,142 @@ public final class DbWorker {
         }
     }
 
+    public void addYearToDB(LearningYear newYear){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO LearningYear (interval, quanRate, hourAssist, hourSenior, hourDocent, hourProf,"+
+                    " hourChief, loadData, remark) VALUES ('"+newYear.getInterval()+"' , "+newYear.getQuanRate()+" , "+
+                    newYear.getHourAssistant()+" , "+newYear.getHourSenior()+" , "+newYear.getHourDocent()+" , "+
+                    newYear.getHourProfessor()+" , "+newYear.getHourChief()+" , "+newYear.getLoadData()+" , '"+
+                    newYear.getRemark()+"' )");
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
 
+    public void addDiscToDB(Discipline newDisc){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO Discipline (learnYearId, discipName, numGroup, hourLect, hourLab, hourPracW,"+
+                    " hourCons, hourCour, hourRev, hourCred, hourExam, hourPrac, hourThes, hourGrad, hourInd, hourMod, remark)"+
+                    " VALUES ("+newDisc.getLearningYearId()+" , '"+newDisc.getDisciplineName()+"' , "+newDisc.getNumGroup()+" , "+
+                    newDisc.getHourLect()+" , "+newDisc.getHourLab()+" , "+newDisc.getHourPracW()+" , "+newDisc.getHourCons()+
+                    " , "+newDisc.getHourCour()+" , "+newDisc.getHourRev()+" , "+newDisc.getHourCred()+" , "+newDisc.getHourExam()+
+                    " , "+newDisc.getHourPrac()+" , "+newDisc.getHourThes()+" , "+newDisc.getHourGrad()+" , "+
+                    newDisc.getHourInd()+" , "+newDisc.getHourMod()+" , '"+newDisc.getRemark()+"' )");
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void delYearFromDB(LearningYear delYear){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM LearningYear WHERE learnYearId="+delYear.getLearningYearId());
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void delDiscFromDB(Discipline delDisc){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM Discipline WHERE discipId="+delDisc.getDisciplineId());
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void addLoadToDB(LecturersLoad load) {
+        try {
+            stmt = conn.createStatement();
+            query = "INSERT INTO LecturersLoad (learnYearId, lectId, discipId, hourLect, hourLab, hourPracW,"+
+                    " hourCons, hourCour, hourRev, hourCred, hourExam, hourPrac, hourThes, hourGrad, hourInd, hourMod, remark)"+
+                    " VALUES ("+load.getLearningYearId()+" , "+load.getLecturerId()+" , "+load.getDisciplineId()+" , "+
+                    load.getHourLect()+" , "+load.getHourLab()+" , "+load.getHourPracW()+" , "+load.getHourCons()+
+                    " , "+load.getHourCour()+" , "+load.getHourRev()+" , "+load.getHourCred()+" , "+load.getHourExam()+
+                    " , "+load.getHourPrac()+" , "+load.getHourThes()+" , "+load.getHourGrad()+" , "+
+                    load.getHourInd()+" , "+load.getHourMod()+" , '"+load.getRemark()+"' )";
+            stmt.executeUpdate(query);
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(query);
+        }
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void delLoadFromDB(LecturersLoad load){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM LecturersLoad WHERE lectLoadId="+load.getLecturersLoadId());
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void addLectToDB(Lecturer lecturer){
+        try {
+            stmt = conn.createStatement();
+            query = "INSERT INTO Lecturer (learnYearId, lectName, lectRate, rank, remark)"+
+                    " VALUES ("+lecturer.getLearningYearId()+" , '"+lecturer.getLecturerName()+"' , "+lecturer.getLecturerRate()+
+                    " , '"+lecturer.getRank()+"' , '"+lecturer.getRemark()+"' )";
+            stmt.executeUpdate(query);
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(query);
+        }
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void delLectFromDB(Lecturer lecturer){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM Lecturer WHERE lectId="+lecturer.getLecturerId());
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void updateYearInDB(LearningYear newYear) {
+        try {
+            stmt = conn.createStatement();
+            query = "UPDATE LearningYear SET interval = '"+newYear.getInterval()+"' , quanRate = "+newYear.getQuanRate()+
+                    " , hourAssist = "+newYear.getHourAssistant()+" , hourSenior = "+newYear.getHourSenior()+" , hourDocent = " +
+                    +newYear.getHourDocent()+", hourProf = "+newYear.getHourProfessor()+" , hourChief = "+newYear.getHourChief()+
+                    " , loadData = "+newYear.getLoadData()+", remark = '"+newYear.getLoadData()+
+                    "' WHERE learnYearId="+newYear.getLearningYearId();
+            stmt.executeUpdate(query);
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
 }
