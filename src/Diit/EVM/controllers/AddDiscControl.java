@@ -80,10 +80,10 @@ public class AddDiscControl {
             Convert.rend(fldGrad.getText()),
             Convert.rend(fldInd.getText()),
             Convert.rend(fldMod.getText()),
+            0,
             fldRe.getText()
         );
         dbWorker.addDiscToDB(discipline);
-        dbWorker.disciplines.add(discipline);
         cancelNewDisc();
     }
 

@@ -52,7 +52,6 @@ public class AddYearControl {
               fldRe.getText()
       );
       dbWorker.addYearToDB(newYear);
-      dbWorker.learningYears.add(newYear);
       cancelNewYear();
     }
 

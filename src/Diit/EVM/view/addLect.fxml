@@ -48,7 +48,7 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
-        <Label text="В разработке" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+        <Label text="Количество часов" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>

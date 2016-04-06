@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
 <?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Diit.EVM.controllers.AuthControl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="360.0" styleClass="background" stylesheets="@authStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Diit.EVM.controllers.AuthControl">
    <children>
-      <Label layoutX="38.0" layoutY="28.0" text="Авторизация">
-         <font>
-            <Font name="Meiryo UI" size="45.0" />
-         </font>
-      </Label>
-      <Label layoutX="111.0" layoutY="131.0" text="Логин">
+      <Label layoutX="15.0" layoutY="14.0" styleClass="sectionTitle" text="Логин">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label layoutX="111.0" layoutY="186.0" text="Пароль">
+      <Label layoutX="15.0" layoutY="69.0" styleClass="sectionTitle" text="Пароль">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Button defaultButton="true" layoutX="243.0" layoutY="270.0" mnemonicParsing="false" onAction="#enterAuth" prefHeight="48.0" prefWidth="201.0" text="Войти">
+      <Button defaultButton="true" layoutX="146.0" layoutY="132.0" mnemonicParsing="false" onAction="#enterAuth" prefHeight="48.0" prefWidth="201.0" text="Войти">
          <font>
             <Font size="22.0" />
          </font>
       </Button>
-      <Button cancelButton="true" focusTraversable="false" layoutX="38.0" layoutY="270.0" mnemonicParsing="false" onAction="#cancelAuth" prefHeight="48.0" prefWidth="108.0" text="Отмена">
+      <Button cancelButton="true" focusTraversable="false" layoutX="14.0" layoutY="132.0" mnemonicParsing="false" onAction="#cancelAuth" prefHeight="48.0" prefWidth="123.0" text="Отмена">
          <font>
             <Font size="22.0" />
          </font>
       </Button>
-      <TextField fx:id="fldLog" layoutX="243.0" layoutY="131.0" prefHeight="48.0" prefWidth="201.0">
+      <TextField fx:id="fldLog" layoutX="147.0" layoutY="14.0" prefHeight="48.0" prefWidth="201.0" styleClass="inputSection">
          <font>
             <Font name="Calibri" size="26.0" />
          </font>
       </TextField>
-      <TextField fx:id="fldPsw" layoutX="243.0" layoutY="188.0" prefHeight="48.0" prefWidth="201.0">
+      <TextField fx:id="fldPsw" layoutX="147.0" layoutY="71.0" prefHeight="48.0" prefWidth="201.0" styleClass="inputSection">
          <font>
             <Font name="Calibri" size="26.0" />
          </font>
       </TextField>
-      <Label layoutX="437.0" layoutY="20.0" prefHeight="98.0" prefWidth="101.0" text="egoroff   root&#10;ostap   user1&#10;samkov   user2&#10;" />
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

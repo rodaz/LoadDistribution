@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -23,9 +24,9 @@ public class Main extends Application{
         Parent fxmlAuth = fxmlLoader.load();
         AuthControl authControl = fxmlLoader.getController();
         authControl.setAuthStage(primaryStage);
-
         primaryStage.setTitle("Авторизация");
-        primaryStage.setScene(new Scene(fxmlAuth, 552, 362));
+        primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
+        primaryStage.setScene(new Scene(fxmlAuth, 360, 195));
         primaryStage.show();
     }
 }

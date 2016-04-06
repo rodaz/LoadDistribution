@@ -13,14 +13,19 @@ public class Lecturer {
     private SimpleStringProperty lecturerName;
     private SimpleDoubleProperty lecturerRate;
     private SimpleStringProperty rank;
+    private SimpleIntegerProperty hours;
+    private SimpleIntegerProperty totalHours;
     private SimpleStringProperty remark;
 
-    public Lecturer(int lecturerId, int learningYearId, String lecturerName, double lecturerRate, String rank, String remark){
+    public Lecturer(int lecturerId, int learningYearId, String lecturerName, double lecturerRate, String rank,
+                    int hours, int totalHours, String remark){
         this.lecturerId = new SimpleIntegerProperty(lecturerId);
         this.learningYearId = new SimpleIntegerProperty(learningYearId);
         this.lecturerName = new SimpleStringProperty(lecturerName);
         this.lecturerRate = new SimpleDoubleProperty(lecturerRate);
         this.rank = new SimpleStringProperty(rank);
+        this.hours = new SimpleIntegerProperty(hours);
+        this.totalHours = new SimpleIntegerProperty(totalHours);
         this.remark = new SimpleStringProperty(remark);
     }
 
@@ -82,6 +87,30 @@ public class Lecturer {
 
     public void setRank(String rank) {
         this.rank.set(rank);
+    }
+
+    public int getHours() {
+        return hours.get();
+    }
+
+    public SimpleIntegerProperty hoursProperty() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours.set(hours);
+    }
+
+    public int getTotalHours() {
+        return totalHours.get();
+    }
+
+    public SimpleIntegerProperty totalHoursProperty() {
+        return totalHours;
+    }
+
+    public void setTotalHours(int totalHours) {
+        this.totalHours.set(totalHours);
     }
 
     public String getRemark() {

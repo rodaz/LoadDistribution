@@ -35,8 +35,6 @@ public class MainControl {
     @FXML
     private Pane pnHome;
     @FXML
-    private Label lblUserName;
-    @FXML
     private ListView<LearningYear> listOfLearningYears;
     @FXML
     private MenuBar mnMain;
@@ -92,15 +90,7 @@ public class MainControl {
         hideAllButtons();   //скрываем все кнопки
         viewYears();    //отображаем список годов
         initListeners();    //инициализация слушателей
-        /**
-         * Имя лектора отображаем.
-        */
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                lblUserName.setText(userName);
-            }
-        });
+
         Cell<String> cell = new Cell<>();
         cell.getItem();
 
@@ -163,6 +153,7 @@ public class MainControl {
      * Отображает лист со всеми лекторами.
      */
     public void viewLect(){
+        mainStage.setTitle(selectedYear.getInterval());
         dbWorker.getLecturersFromDB();  //считывает базу данных лекторов
         listOfLecturers.setItems(dbWorker.lecturers);   //помещает список лекторов в лист
         pane.setCenter(listOfLecturers);    //лист устанавливаем в корневой контейнер
@@ -172,6 +163,7 @@ public class MainControl {
      * Отображает лист с дисциплинами за выбранный учебный год
      */
     public void viewDisc(){
+        mainStage.setTitle(selectedYear.getInterval());
         dbWorker.getDisciplinesFromDB(selectedYear);
         listOfDisciplines.setItems(dbWorker.disciplines);
         pane.setCenter(listOfDisciplines);
@@ -189,6 +181,7 @@ public class MainControl {
                 if (event.getClickCount() == 2){
                     selectedLecturer = listOfLecturers.getSelectionModel().getSelectedItem();
                     tableViewLoadForLecturer();
+                    mainStage.setTitle(selectedYear+" "+selectedLecturer);
                 }
             }
         });
@@ -228,6 +221,7 @@ public class MainControl {
      * Отображение таблицы дисциплин
      */
     public void tableViewDisciplines() {
+        mainStage.setTitle(selectedYear.getInterval());
         dbWorker.getDisciplinesFromDB(selectedYear);
         if (tableOfDisciplines.getItems().size() == 0){
             createTableOfDisciplines();
@@ -256,6 +250,7 @@ public class MainControl {
      * Отображение таблицы всех лекторов
      */
     public void tableViewLecturers(){
+        mainStage.setTitle(selectedYear.getInterval());
         dbWorker.getLecturersFromDB();
         if (tableOfLecturers.getItems().size() == 0){
             createTableOfLecturers();
@@ -302,13 +297,19 @@ public class MainControl {
         TableColumn<Lecturer, String> rankCol = new TableColumn<>("Статус");
         rankCol.setCellValueFactory(new PropertyValueFactory("rank"));
         rankCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        TableColumn<Lecturer, Integer> hoursCol = new TableColumn<>("Часы");
+        hoursCol.setCellValueFactory(new PropertyValueFactory("hours"));
+        hoursCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
+        TableColumn<Lecturer, Integer> totalHoursCol = new TableColumn<>("Нужно часов");
+        totalHoursCol.setCellValueFactory(new PropertyValueFactory("totalHours"));
+        totalHoursCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
         TableColumn<Lecturer, String> remarkCol = new TableColumn<>("Заметка");
         remarkCol.setCellValueFactory(new PropertyValueFactory("remark"));
         remarkCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
         tableOfLecturers.setItems(dbWorker.lecturers);
         tableOfLecturers.setEditable(true);
-        tableOfLecturers.getColumns().setAll(lecturerNameCol, lecturerRateCol, rankCol, remarkCol);
+        tableOfLecturers.getColumns().setAll(lecturerNameCol, lecturerRateCol, rankCol, hoursCol, totalHoursCol, remarkCol);
     }
     /**
      * Тут создаем таблицу дисциплин.
@@ -359,6 +360,9 @@ public class MainControl {
         TableColumn<Discipline, Integer> hourModCol = new TableColumn<>("Модуль");
         hourModCol.setCellValueFactory(new PropertyValueFactory("hourMod"));
         hourModCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
+        TableColumn<Discipline, Integer> totalCol = new TableColumn<>("Итого");
+        totalCol.setCellValueFactory(new PropertyValueFactory("total"));
+        totalCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
         TableColumn<Discipline, String> remarkCol = new TableColumn<>("Заметка");
         remarkCol.setCellValueFactory(new PropertyValueFactory("remark"));
         remarkCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -367,14 +371,13 @@ public class MainControl {
         tableOfDisciplines.setEditable(true);
         tableOfDisciplines.getColumns().setAll(disciplineNameCol, numGroupCol, hourLectCol, hourLabCol, hourPracWCol,
                 hourConsCol, hourCourCol, hourRevCol, hourCredCol, hourExamCol, hourPracCol, hourThesCol, hourGradCol,
-                hourIndCol, hourModCol, remarkCol);
+                hourIndCol, hourModCol, totalCol, remarkCol);
     }
     /**
      * Создание таблицы нагрузки преподавателей
      */
     private void createTableOfLoadLect(){
 
-        //Table Column create ----------------------------------------------------------------
         TableColumn<LecturersLoad, String> disciplineNameCol = new TableColumn<>("Название");
         disciplineNameCol.setCellValueFactory(new PropertyValueFactory("disciplineName"));
         disciplineNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -431,16 +434,19 @@ public class MainControl {
         hourModCol.setCellValueFactory(new PropertyValueFactory("hourMod"));
         hourModCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
 
+        TableColumn<LecturersLoad, Integer> totalCol = new TableColumn<>("Итого");
+        totalCol.setCellValueFactory(new PropertyValueFactory("total"));
+        totalCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
+
         TableColumn<LecturersLoad, String> remarkCol = new TableColumn<>("Заметка");
         remarkCol.setCellValueFactory(new PropertyValueFactory("remark"));
         remarkCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        //------------------------------------------------------------------------------
 
         tableOfLoadLect.setItems(dbWorker.lecturersLoads);
         tableOfLoadLect.setEditable(true);
         tableOfLoadLect.getColumns().setAll(disciplineNameCol, hourLectCol, hourLabCol, hourPracWCol,
                 hourConsCol, hourCourCol, hourRevCol, hourCredCol, hourExamCol, hourPracCol, hourThesCol, hourGradCol,
-                hourIndCol, hourModCol, remarkCol);
+                hourIndCol, hourModCol, totalCol, remarkCol);
     }
     /**
      * Создание таблицы нагрузки дисциплин
@@ -502,6 +508,10 @@ public class MainControl {
         hourModCol.setCellValueFactory(new PropertyValueFactory("hourMod"));
         hourModCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
 
+        TableColumn<LecturersLoad, Integer> totalCol = new TableColumn<>("Итого");
+        totalCol.setCellValueFactory(new PropertyValueFactory("total"));
+        totalCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
+
         TableColumn<LecturersLoad, String> remarkCol = new TableColumn<>("Заметка");
         remarkCol.setCellValueFactory(new PropertyValueFactory("remark"));
         remarkCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -511,7 +521,7 @@ public class MainControl {
         tableOfLoadDisc.setEditable(true);
         tableOfLoadDisc.getColumns().setAll(lecturerNameCol, hourLectCol, hourLabCol, hourPracWCol,
                 hourConsCol, hourCourCol, hourRevCol, hourCredCol, hourExamCol, hourPracCol, hourThesCol, hourGradCol,
-                hourIndCol, hourModCol, remarkCol);
+                hourIndCol, hourModCol, totalCol, remarkCol);
     }
     /**
      * Вешаем слушатель закрытия окна.
@@ -640,47 +650,35 @@ public class MainControl {
 
     public void btnSaveDiscAction() {
         for (Discipline disc: dbWorker.disciplines) {
-            dbWorker.delDiscFromDB(disc);
-        }
-        for (Discipline disc: dbWorker.disciplines) {
-            dbWorker.addDiscToDB(disc);
+            dbWorker.updateDiscInDB(disc);
         }
     }
 
     public void btnSaveLectAction() {
         for (Lecturer lect: dbWorker.lecturers){
-            dbWorker.delLectFromDB(lect);
-        }
-        for (Lecturer lect: dbWorker.lecturers){
-            dbWorker.addLectToDB(lect);
+            dbWorker.updateLectInDB(lect);
         }
     }
 
     public void btnSaveLoadAction() {
         for (LecturersLoad load: dbWorker.lecturersLoads){
-            dbWorker.delLoadFromDB(load);
-        }
-        for (LecturersLoad load: dbWorker.lecturersLoads){
-            dbWorker.addLoadToDB(load);
+            dbWorker.updateLoadInDB(load);
         }
     }
 
     public void btnDelYearAction() {
         LearningYear year = listOfLearningYears.getSelectionModel().getSelectedItem();
         dbWorker.delYearFromDB(year);
-        dbWorker.learningYears.remove(year);
     }
 
     public void btnDelDiscAction() {
         Discipline disc = tableOfDisciplines.getSelectionModel().getSelectedItem();
         dbWorker.delDiscFromDB(disc);
-        dbWorker.disciplines.remove(disc);
     }
 
     public void btnDelLectAction() {
         Lecturer lect = tableOfLecturers.getSelectionModel().getSelectedItem();
         dbWorker.delLectFromDB(lect);
-        dbWorker.lecturers.remove(lect);
     }
 
     public void btnDelLoadAction() {
@@ -689,6 +687,5 @@ public class MainControl {
             load = tableOfLoadLect.getSelectionModel().getSelectedItem();
         }
         dbWorker.delLoadFromDB(load);
-        dbWorker.lecturersLoads.remove(load);
     }
 }

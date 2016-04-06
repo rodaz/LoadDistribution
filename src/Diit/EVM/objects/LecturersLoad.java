@@ -26,11 +26,12 @@ public class LecturersLoad {
     private SimpleIntegerProperty hourGrad;
     private SimpleIntegerProperty hourInd;
     private SimpleIntegerProperty hourMod;
+    private SimpleIntegerProperty total;
     private SimpleStringProperty remark;
 
     public LecturersLoad(int lecturersLoadId, int learningYearId, int lecturerId, String lecturerName, int disciplineId, String disciplineName,
                          int hourLect, int hourLab, int hourPracW, int hourCons, int hourCour, int hourRev, int hourCred,
-                         int hourExam, int hourPrac, int hourThes, int hourGrad, int hourInd, int hourMod, String remark) {
+                         int hourExam, int hourPrac, int hourThes, int hourGrad, int hourInd, int hourMod, int total, String remark) {
         this.disciplineId = new SimpleIntegerProperty(disciplineId);
         this.learningYearId = new SimpleIntegerProperty(learningYearId);
         this.lecturersLoadId = new SimpleIntegerProperty(lecturersLoadId);
@@ -50,6 +51,7 @@ public class LecturersLoad {
         this.hourGrad = new SimpleIntegerProperty(hourGrad);
         this.hourInd = new SimpleIntegerProperty(hourInd);
         this.hourMod = new SimpleIntegerProperty(hourMod);
+        this.total = new SimpleIntegerProperty(total);
         this.remark = new SimpleStringProperty(remark);
     }
 
@@ -255,6 +257,18 @@ public class LecturersLoad {
 
     public void setHourMod(int hourMod) {
         this.hourMod.set(hourMod);
+    }
+
+    public int getTotal() {
+        return total.get();
+    }
+
+    public SimpleIntegerProperty totalProperty() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total.set(total);
     }
 
     public String getRemark() {

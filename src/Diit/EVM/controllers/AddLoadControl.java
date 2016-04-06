@@ -91,10 +91,10 @@ public class AddLoadControl {
                 Convert.rend(fldGrad.getText()),
                 Convert.rend(fldInd.getText()),
                 Convert.rend(fldMod.getText()),
+                0,
                 fldRe.getText()
         );
         dbWorker.addLoadToDB(load);
-        dbWorker.lecturersLoads.add(load);
         cancelNewLoad();
     }
 

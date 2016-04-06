@@ -1,0 +1,30 @@
+.background {
+    -fx-background-color: #B3E5FC;
+}
+
+.text-field {
+    -fx-background-color : #E1F5FE;
+}
+
+.button {
+    -fx-background-color : #29B6F6;
+    -fx-text-fill        : black;
+    -fx-font-weight      : 900;
+}
+
+.button:hover {
+    -fx-background-color : #01579B;
+
+}
+.list-cell {
+    -fx-font-size : 1.3em;
+    -fx-alignment : center;
+}
+.list-view {
+    -fx-padding : 10;
+}
+
+.menu-bar {
+    -fx-font-weight    : bold;
+    -fx-background-color : #E1F5FE;
+}

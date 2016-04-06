@@ -7,9 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 /**
@@ -64,11 +66,21 @@ public class AuthControl {
     public void enterAuth() {
         dbWorker.getUsersFromDB();
 
+        int sz = dbWorker.userAuthList.size();
+        int i =0;
         for (UserAuth user : dbWorker.userAuthList){
-            //if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
+            i= i+1;
+            if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
                 createMain(user.getName());
-            break;
-            //}
+                break;
+            } else {
+                if (i==sz) {
+                Alert alert = new Alert(Alert.AlertType.NONE, "Неправильный логин или пароль", ButtonType.OK);
+                alert.setTitle("Ошибка");
+                alert.show();
+                break;
+                }
+            }
         }
     }
     /**
@@ -82,9 +94,9 @@ public class AuthControl {
             mainControl = fxmlLoader.getController();
         } catch (IOException e) {e.printStackTrace();}
         mainControl.setMainStage(mainStage);
-        mainControl.setUserName(userName);
         mainControl.closeConn();
         mainStage.setTitle("EVM");
+        mainStage.getIcons().add(new Image("file:resources/images/icon.png"));
         mainStage.setScene(new Scene(fxmlMain, 600, 400));
         mainStage.show();
         if (authStage != null){
