@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
@@ -154,7 +155,7 @@ public class MainControl {
      */
     public void viewLect(){
         mainStage.setTitle(selectedYear.getInterval());
-        dbWorker.getLecturersFromDB();  //считывает базу данных лекторов
+        dbWorker.getLecturersFromDB(selectedYear);  //считывает базу данных лекторов
         listOfLecturers.setItems(dbWorker.lecturers);   //помещает список лекторов в лист
         pane.setCenter(listOfLecturers);    //лист устанавливаем в корневой контейнер
         hideAllButtons();
@@ -208,12 +209,11 @@ public class MainControl {
                 }
             }
         });
-
     }
 
     public  void restart(){
         AuthControl authControl = new AuthControl();
-        authControl.createMain(userName);
+        authControl.createMain();
         mainStage.close();
     }
 
@@ -251,7 +251,7 @@ public class MainControl {
      */
     public void tableViewLecturers(){
         mainStage.setTitle(selectedYear.getInterval());
-        dbWorker.getLecturersFromDB();
+        dbWorker.getLecturersFromDB(selectedYear);
         if (tableOfLecturers.getItems().size() == 0){
             createTableOfLecturers();
         }
@@ -296,13 +296,16 @@ public class MainControl {
         lecturerRateCol.setCellFactory(TextFieldTableCell.forTableColumn(dsc));
         TableColumn<Lecturer, String> rankCol = new TableColumn<>("Статус");
         rankCol.setCellValueFactory(new PropertyValueFactory("rank"));
-        rankCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        TableColumn<Lecturer, Integer> hoursCol = new TableColumn<>("Часы");
+        rankCol.setCellFactory(ChoiceBoxTableCell.forTableColumn(dbWorker.ranks));
+        TableColumn<Lecturer, Integer> hoursCol = new TableColumn<>("Распределено");
         hoursCol.setCellValueFactory(new PropertyValueFactory("hours"));
         hoursCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
-        TableColumn<Lecturer, Integer> totalHoursCol = new TableColumn<>("Нужно часов");
+        TableColumn<Lecturer, Integer> totalHoursCol = new TableColumn<>("Норма часов");
         totalHoursCol.setCellValueFactory(new PropertyValueFactory("totalHours"));
         totalHoursCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
+        TableColumn<Lecturer, Integer> hoursLeftCol = new TableColumn<>("Не распределено");
+        hoursLeftCol.setCellValueFactory(new PropertyValueFactory("hoursLeft"));
+        hoursLeftCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
         TableColumn<Lecturer, String> remarkCol = new TableColumn<>("Заметка");
         remarkCol.setCellValueFactory(new PropertyValueFactory("remark"));
         remarkCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -318,9 +321,9 @@ public class MainControl {
         TableColumn<Discipline, String> disciplineNameCol = new TableColumn<>("Название");
         disciplineNameCol.setCellValueFactory(new PropertyValueFactory("disciplineName"));
         disciplineNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        TableColumn<Discipline, Integer> numGroupCol = new TableColumn<>("Группа");
+        TableColumn<Discipline, String> numGroupCol = new TableColumn<>("Группы");
         numGroupCol.setCellValueFactory(new PropertyValueFactory("numGroup"));
-        numGroupCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
+        numGroupCol.setCellFactory(TextFieldTableCell.forTableColumn());
         TableColumn<Discipline, Integer> hourLectCol = new TableColumn<>("Лекции");
         hourLectCol.setCellValueFactory(new PropertyValueFactory("hourLect"));
         hourLectCol.setCellFactory(TextFieldTableCell.forTableColumn(sc));
@@ -532,6 +535,9 @@ public class MainControl {
         mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
+                btnSaveDiscAction();
+                btnSaveLectAction();
+                btnSaveLoadAction();
                 try {
                     dbWorker.conn.close();
                 } catch (SQLException e) {
@@ -575,6 +581,7 @@ public class MainControl {
             addDiscControl = fxmlLoader.getController();
         } catch (IOException e) {e.printStackTrace();}
         addDiscControl.setAddDiscStage(addDiscStage);
+        addDiscControl.setYear(selectedYear);
         addDiscStage.setTitle("Добавить");
         addDiscStage.setScene(new Scene(fxmlAddDisc, 700, 400));
         addDiscStage.setResizable(false);
@@ -596,6 +603,7 @@ public class MainControl {
             addLectControl = fxmlLoader.getController();
         } catch (IOException e) {e.printStackTrace();}
         addLectControl.setAddLectStage(addLectStage);
+        addLectControl.setYear(selectedYear);
         addLectStage.setTitle("Добавить");
         addLectStage.setScene(new Scene(fxmlAddLect, 400, 350));
         addLectStage.setResizable(false);
@@ -617,9 +625,13 @@ public class MainControl {
             addLoadControl = fxmlLoader.getController();
         } catch (IOException e) {e.printStackTrace();}
         addLoadControl.setAddLoadStage(addLoadStage);
+        addLoadControl.setDefault(selectedYear, selectedLecturer, selectedDiscipline);
         addLoadStage.setTitle("Добавить");
         if (dbWorker.disciplines.size() == 0){
             dbWorker.getDisciplinesFromDB(selectedYear);    //считываем список дисциплин, что-бы в ChoiceBox-e выбирать
+        }
+        if (dbWorker.lecturers.size() == 0){
+            dbWorker.getLecturersFromDB(selectedYear);  //считываем лекторов что-бы выбирать в ChoiceBox-e
         }
         addLoadStage.setScene(new Scene(fxmlAddLoad, 700, 400));
         addLoadStage.setResizable(false);

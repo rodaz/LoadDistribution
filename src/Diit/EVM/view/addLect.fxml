@@ -48,17 +48,17 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
-        <Label text="Количество часов" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+        <Label text="Норма часов" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
-        <Label text="Замечание" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+        <Label text="Примечание" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
-        <ChoiceBox fx:id="choYear" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <ChoiceBox fx:id="choYear" disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <TextField fx:id="fldName" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets right="5.0" />

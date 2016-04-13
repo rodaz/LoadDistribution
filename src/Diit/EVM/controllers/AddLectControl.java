@@ -40,11 +40,15 @@ public class AddLectControl {
         choRank.setItems(dbWorker.ranks);
     }
 
+    public void setYear(LearningYear year){
+        choYear.setValue(year);
+    }
+
     public void addNewLect(){
         LearningYear year = choYear.getValue();
         String rank = (String) choRank.getSelectionModel().getSelectedItem();
-        Lecturer lecturer = new Lecturer(0,year.getLearningYearId(), fldName.getText(), Convert.rendD(fldRate.getText()),
-                rank, 0, Convert.rend(fldHours.getText()), fldRe.getText());
+        Lecturer lecturer = new Lecturer(0, year.getLearningYearId(), fldName.getText(), Convert.rendD(fldRate.getText()),
+                rank, 0, Convert.rend(fldHours.getText()), 0, fldRe.getText());
         dbWorker.addLectToDB(lecturer);
         cancelNewLect();
     }

@@ -36,6 +36,7 @@ public final class DbWorker {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     public static DbWorker getInstance(){
@@ -53,7 +54,7 @@ public final class DbWorker {
             res = stmt.executeQuery("SELECT * FROM Discipline WHERE Discipline.learnYearId = " + learningYear.getLearningYearId());
             disciplines.clear();
             while (res.next()){
-                disciplines.add(new Discipline(res.getInt(1), res.getInt(2), res.getString(3), res.getInt(4),
+                disciplines.add(new Discipline(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4),
                         res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9), res.getInt(10), res.getInt(11),
                         res.getInt(12), res.getInt(13), res.getInt(14), res.getInt(15), res.getInt(16), res.getInt(17), res.getInt(18), res.getString(19)));
             }
@@ -65,14 +66,14 @@ public final class DbWorker {
         }
     }
 
-    public void getLecturersFromDB() {
+    public void getLecturersFromDB(LearningYear learningYear) {
         try {
             stmt = conn.createStatement();
-            res = stmt.executeQuery("SELECT * FROM Lecturer");
+            res = stmt.executeQuery("SELECT * FROM Lecturer WHERE Lecturer.learnYearId = "+ learningYear.getLearningYearId());
             lecturers.clear();
             while (res.next()){
                 lecturers.add(new Lecturer(res.getInt(1), res.getInt(2), res.getString(3), res.getDouble(4),
-                        res.getString(5), res.getInt(6), res.getInt(7), res.getString(8)));
+                        res.getString(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getString(9)));
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -175,7 +176,7 @@ public final class DbWorker {
             stmt = conn.createStatement();
             stmt.executeUpdate("INSERT INTO Discipline (learnYearId, discipName, numGroup, hourLect, hourLab, hourPracW,"+
                     " hourCons, hourCour, hourRev, hourCred, hourExam, hourPrac, hourThes, hourGrad, hourInd, hourMod, total, remark)"+
-                    " VALUES ("+discipline.getLearningYearId()+" , '"+discipline.getDisciplineName()+"' , "+discipline.getNumGroup()+" , "+
+                    " VALUES ("+discipline.getLearningYearId()+" , '"+discipline.getDisciplineName()+"' , '"+discipline.getNumGroup()+"' , "+
                     discipline.getHourLect()+" , "+discipline.getHourLab()+" , "+discipline.getHourPracW()+" , "+discipline.getHourCons()+
                     " , "+discipline.getHourCour()+" , "+discipline.getHourRev()+" , "+discipline.getHourCred()+" , "+discipline.getHourExam()+
                     " , "+discipline.getHourPrac()+" , "+discipline.getHourThes()+" , "+discipline.getHourGrad()+" , "+
@@ -254,9 +255,10 @@ public final class DbWorker {
     public void addLectToDB(Lecturer lecturer){
         try {
             stmt = conn.createStatement();
-            query = "INSERT INTO Lecturer (learnYearId, lectName, lectRate, rank, hours, totalHours, remark)"+
+            query = "INSERT INTO Lecturer (learnYearId, lectName, lectRate, rank, hours, totalHours, hoursLeft, remark)"+
                     " VALUES ("+lecturer.getLearningYearId()+" , '"+lecturer.getLecturerName()+"' , "+lecturer.getLecturerRate()+
-                    " , '"+lecturer.getRank()+"' , "+lecturer.getHours()+" , "+lecturer.getTotalHours()+" , '"+lecturer.getRemark()+"' )";
+                    " , '"+lecturer.getRank()+"' , "+lecturer.getHours()+" , "+lecturer.getTotalHours()+" , "+
+                    lecturer.getHoursLeft()+" , '"+lecturer.getRemark()+"' )";
             stmt.executeUpdate(query);
             lecturers.add(lecturer);
             conn.commit();
@@ -289,7 +291,7 @@ public final class DbWorker {
             query = "UPDATE LearningYear SET interval = '"+newYear.getInterval()+"' , quanRate = "+newYear.getQuanRate()+
                     " , hourAssist = "+newYear.getHourAssistant()+" , hourSenior = "+newYear.getHourSenior()+" , hourDocent = " +
                     +newYear.getHourDocent()+", hourProf = "+newYear.getHourProfessor()+" , hourChief = "+newYear.getHourChief()+
-                    " , loadData = "+newYear.getLoadData()+", remark = '"+newYear.getRemark()+
+                    " , loadData = "+newYear.getLoadData()+" , remark = '"+newYear.getRemark()+
                     "' WHERE learnYearId="+newYear.getLearningYearId();
             stmt.executeUpdate(query);
             conn.commit();
@@ -305,8 +307,8 @@ public final class DbWorker {
             stmt = conn.createStatement();
             query = "UPDATE Lecturer SET learnYearId = "+lecturer.getLearningYearId()+" , lectName = '"+lecturer.getLecturerName()+
                     "' , lectRate = "+lecturer.getLecturerRate()+" , rank = '"+lecturer.getRank()+"' , hours = " +
-                    lecturer.getHours()+" totalHours = "+lecturer.getTotalHours()+" remark = '" +
-                    lecturer.getRemark()+"' WHERE lectId="+lecturer.getLecturerId();
+                    lecturer.getHours()+" , totalHours = "+lecturer.getTotalHours()+" , hoursLeft = "+lecturer.getHoursLeft()
+                    +" , remark = '"+lecturer.getRemark()+"' WHERE lectId="+lecturer.getLecturerId();
             stmt.executeUpdate(query);
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
@@ -320,7 +322,7 @@ public final class DbWorker {
         try {
             stmt = conn.createStatement();
             query = "UPDATE Discipline SET learnYearId = "+discipline.getLearningYearId()+" , discipName = '"+discipline.getDisciplineName()+
-                    "' , numGroup = "+discipline.getNumGroup()+" , hourLect = "+discipline.getHourLect()+" ," +
+                    "' , numGroup = '"+discipline.getNumGroup()+"' , hourLect = "+discipline.getHourLect()+" ," +
                     " hourLab = "+discipline.getHourLab()+" , hourPracW = "+discipline.getHourPracW()+" , hourCons = "+
                     discipline.getHourCons()+" , hourCour = "+discipline.getHourCour()+" , hourRev = "+discipline.getHourRev()+
                     " , hourCred = "+discipline.getHourCred()+" , hourExam = "+discipline.getHourExam()+" , hourPrac = "+

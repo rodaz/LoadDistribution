@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class AddDiscControl {
 
     @FXML
-    private ChoiceBox choYear;
+    private ChoiceBox<LearningYear> choYear;
     @FXML
     private TextField fldDisc;
     @FXML
@@ -56,9 +56,9 @@ public class AddDiscControl {
         this.addDiscStage = addDiscStage;
     }
 
-    @FXML
-    public void initialize(){
+    public void setYear(LearningYear selectedYear){
         choYear.setItems(dbWorker.learningYears);
+        choYear.setValue(selectedYear);
     }
 
     public void addNewDisc(){
@@ -66,7 +66,7 @@ public class AddDiscControl {
         Discipline discipline = new Discipline( 0,
             learningYear.getLearningYearId(),
             fldDisc.getText(),
-            Convert.rend(fldGroup.getText()),
+            fldGroup.getText(),
             Convert.rend(fldLect.getText()),
             Convert.rend(fldLab.getText()),
             Convert.rend(fldPracW.getText()),

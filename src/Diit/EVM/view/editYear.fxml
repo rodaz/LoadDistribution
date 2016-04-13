@@ -40,7 +40,7 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
-        <Label text="Общая ставка" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+        <Label text="Количество ставок" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>
@@ -65,7 +65,7 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
-        <Label text="Часы зав. кафедры" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+        <Label text="Часы деканат" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>
@@ -75,7 +75,7 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
-        <Label text="Замечание" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
+        <Label text="Примечание" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>

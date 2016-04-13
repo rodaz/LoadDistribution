@@ -50,6 +50,7 @@ public class AuthControl {
             @Override
             public void run() {
                 fldLog.requestFocus();
+                createMain();
             }
         });
     }
@@ -61,7 +62,7 @@ public class AuthControl {
     }
     /**
      * Обработчик кнопки Enter. Проверяет введенные логин и пароль.
-     * Если ввод правильный вызывает {@link #createMain(String)}
+     * Если ввод правильный вызывает {@link #createMain()}
      */
     public void enterAuth() {
         dbWorker.getUsersFromDB();
@@ -71,7 +72,7 @@ public class AuthControl {
         for (UserAuth user : dbWorker.userAuthList){
             i= i+1;
             if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
-                createMain(user.getName());
+                createMain();
                 break;
             } else {
                 if (i==sz) {
@@ -86,7 +87,7 @@ public class AuthControl {
     /**
      * Создает главное окно c контроллером {@link MainControl}
      */
-    public void createMain(String userName) {
+    public void createMain() {
         mainStage = new Stage();
         try {
             fxmlLoader.setLocation(getClass().getResource("../view/main.fxml"));

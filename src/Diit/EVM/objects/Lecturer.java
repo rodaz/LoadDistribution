@@ -15,10 +15,11 @@ public class Lecturer {
     private SimpleStringProperty rank;
     private SimpleIntegerProperty hours;
     private SimpleIntegerProperty totalHours;
+    private SimpleIntegerProperty hoursLeft;
     private SimpleStringProperty remark;
 
     public Lecturer(int lecturerId, int learningYearId, String lecturerName, double lecturerRate, String rank,
-                    int hours, int totalHours, String remark){
+                    int hours, int totalHours, int hoursLeft, String remark){
         this.lecturerId = new SimpleIntegerProperty(lecturerId);
         this.learningYearId = new SimpleIntegerProperty(learningYearId);
         this.lecturerName = new SimpleStringProperty(lecturerName);
@@ -26,6 +27,7 @@ public class Lecturer {
         this.rank = new SimpleStringProperty(rank);
         this.hours = new SimpleIntegerProperty(hours);
         this.totalHours = new SimpleIntegerProperty(totalHours);
+        this.hoursLeft = new SimpleIntegerProperty(hoursLeft);
         this.remark = new SimpleStringProperty(remark);
     }
 
@@ -111,6 +113,18 @@ public class Lecturer {
 
     public void setTotalHours(int totalHours) {
         this.totalHours.set(totalHours);
+    }
+
+    public int getHoursLeft() {
+        return hoursLeft.get();
+    }
+
+    public SimpleIntegerProperty hoursLeftProperty() {
+        return hoursLeft;
+    }
+
+    public void setHoursLeft(int hoursLeft) {
+        this.hoursLeft.set(hoursLeft);
     }
 
     public String getRemark() {

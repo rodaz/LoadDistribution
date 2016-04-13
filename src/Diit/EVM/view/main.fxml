@@ -23,7 +23,7 @@
             <Button fx:id="btnRest" disable="true" mnemonicParsing="false" onAction="#restart" prefHeight="25.0" prefWidth="25.0" text="&lt;" />
             <MenuBar fx:id="mnMain" disable="true" prefHeight="25.0" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
               <menus>
-                <Menu mnemonicParsing="false" text="Таблицы">
+                <Menu mnemonicParsing="false" text="Нагрузка">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#viewLect" text="Нагрузка по преподавателям" />
                         <MenuItem mnemonicParsing="false" onAction="#viewDisc" text="Нагрузка по дисциплинам" />
@@ -37,7 +37,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Печать">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Готова на 30%" />
+                    <MenuItem mnemonicParsing="false" text="Готова на 50%" />
                   </items>
                 </Menu>
               </menus>

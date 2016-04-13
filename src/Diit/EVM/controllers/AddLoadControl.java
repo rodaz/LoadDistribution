@@ -60,12 +60,15 @@ public class AddLoadControl {
 
     @FXML
     public void initialize(){
-        if (dbWorker.lecturers.size() == 0){
-            dbWorker.getLecturersFromDB();  //считываем лекторов что-бы выбирать в ChoiceBox-e
-        }
         choYear.setItems(dbWorker.learningYears);
         choDisc.setItems(dbWorker.disciplines);
         choLect.setItems(dbWorker.lecturers);
+    }
+
+    public void setDefault(LearningYear year, Lecturer lect, Discipline disc){
+        choYear.setValue(year);
+        choLect.setValue(lect);
+        choDisc.setValue(disc);
     }
 
     public void addNewLoad(){

@@ -10,7 +10,7 @@ public class Discipline {
     private SimpleIntegerProperty disciplineId;
     private SimpleIntegerProperty learningYearId;
     private SimpleStringProperty disciplineName;
-    private SimpleIntegerProperty numGroup;
+    private SimpleStringProperty numGroup;
     private SimpleIntegerProperty hourLect;
     private SimpleIntegerProperty hourLab;
     private SimpleIntegerProperty hourPracW;
@@ -27,13 +27,13 @@ public class Discipline {
     private SimpleIntegerProperty total;
     private SimpleStringProperty remark;
 
-    public Discipline(int disciplineId, int learningYearId, String disciplineName, int numGroup, int hourLect, int hourLab,
+    public Discipline(int disciplineId, int learningYearId, String disciplineName, String numGroup, int hourLect, int hourLab,
                       int hourPracW, int hourCons, int hourCour, int hourRev, int hourCred, int hourExam,
                       int hourPrac, int hourThes, int hourGrad, int hourInd, int hourMod, int total, String remark) {
         this.disciplineId = new SimpleIntegerProperty(disciplineId);
         this.learningYearId = new SimpleIntegerProperty(learningYearId);
         this.disciplineName = new SimpleStringProperty(disciplineName);
-        this.numGroup = new SimpleIntegerProperty(numGroup);
+        this.numGroup = new SimpleStringProperty(numGroup);
         this.hourLect = new SimpleIntegerProperty(hourLect);
         this.hourLab = new SimpleIntegerProperty(hourLab);
         this.hourPracW = new SimpleIntegerProperty(hourPracW);
@@ -87,15 +87,15 @@ public class Discipline {
         this.disciplineName.set(disciplineName);
     }
 
-    public int getNumGroup() {
+    public String getNumGroup() {
         return numGroup.get();
     }
 
-    public SimpleIntegerProperty numGroupProperty() {
+    public SimpleStringProperty numGroupProperty() {
         return numGroup;
     }
 
-    public void setNumGroup(int numGroup) {
+    public void setNumGroup(String numGroup) {
         this.numGroup.set(numGroup);
     }
 
