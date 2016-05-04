@@ -35,9 +35,16 @@
                         <MenuItem mnemonicParsing="false" onAction="#tableViewDisciplines" text="Дисциплины" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Пользователи">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#viewUsers" text="Таблица пользователей" />
+                    </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Печать">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Готова на 50%" />
+                    <MenuItem mnemonicParsing="false" onAction="#printLecturers" text="Печать преподавателей" />
+                    <MenuItem mnemonicParsing="false" onAction="#printDisciplines" text="Печать дисциплин" />
+                        <MenuItem mnemonicParsing="false" onAction="#printLoads" text="Печать нагрузки" />
                   </items>
                 </Menu>
               </menus>
@@ -54,6 +61,7 @@
                   <Button fx:id="btnAddDisc" layoutY="20.0" mnemonicParsing="false" onAction="#btnAddDiscAction" prefHeight="35.0" prefWidth="100.0" text="Добавить" />
                   <Button fx:id="btnAddLect" layoutY="20.0" mnemonicParsing="false" onAction="#btnAddLectAction" prefHeight="35.0" prefWidth="100.0" text="Добавить" />
                   <Button fx:id="btnAddLoad" layoutY="20.0" mnemonicParsing="false" onAction="#btnAddLoadAction" prefHeight="35.0" prefWidth="100.0" text="Добавить" />
+                  <Button fx:id="btnAddUser" layoutY="20.0" mnemonicParsing="false" onAction="#btnAddUserAction" prefHeight="35.0" prefWidth="100.0" text="Добавить" />
                </children>
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
@@ -65,6 +73,7 @@
                   <Button fx:id="btnSaveDisc" layoutY="20.0" mnemonicParsing="false" onAction="#btnSaveDiscAction" prefHeight="35.0" prefWidth="100.0" text="Сохранить" />
                   <Button fx:id="btnSaveLect" layoutY="20.0" mnemonicParsing="false" onAction="#btnSaveLectAction" prefHeight="35.0" prefWidth="100.0" text="Сохранить" />
                   <Button fx:id="btnSaveLoad" layoutY="20.0" mnemonicParsing="false" onAction="#btnSaveLoadAction" prefHeight="35.0" prefWidth="100.0" text="Сохранить" />
+                  <Button fx:id="btnSaveUser" layoutY="20.0" mnemonicParsing="false" onAction="#btnSaveUserAction" prefHeight="35.0" prefWidth="100.0" text="Сохранить" />
                </children>
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
@@ -76,6 +85,7 @@
                   <Button fx:id="btnDelDisc" layoutY="20.0" mnemonicParsing="false" onAction="#btnDelDiscAction" prefHeight="35.0" prefWidth="100.0" text="Удалить" />
                   <Button fx:id="btnDelLect" layoutY="20.0" mnemonicParsing="false" onAction="#btnDelLectAction" prefHeight="35.0" prefWidth="100.0" text="Удалить" />
                   <Button fx:id="btnDelLoad" layoutY="20.0" mnemonicParsing="false" onAction="#btnDelLoadAction" prefHeight="35.0" prefWidth="100.0" text="Удалить" />
+                  <Button fx:id="btnDelUser" layoutY="20.0" mnemonicParsing="false" onAction="#btnDelUserAction" prefHeight="35.0" prefWidth="100.0" text="Удалить" />
                </children>
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />

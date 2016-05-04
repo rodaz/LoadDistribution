@@ -95,6 +95,11 @@
                 <Insets right="10.0" />
             </GridPane.margin>
         </Label>
+        <Label text="Лекции" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <GridPane.margin>
+                <Insets right="10.0" />
+            </GridPane.margin>
+        </Label>
         <Label text="Лабораторные работы" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
             <GridPane.margin>
                 <Insets right="10.0" />
@@ -126,6 +131,11 @@
             </GridPane.margin>
         </Label>
         <Label text="Примечание" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+            <GridPane.margin>
+                <Insets right="10.0" />
+            </GridPane.margin>
+        </Label>
+        <Label text="Семестр" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
             <GridPane.margin>
                 <Insets right="10.0" />
             </GridPane.margin>
@@ -171,10 +181,7 @@
         </TextField>
         <TextField fx:id="fldMod" GridPane.columnIndex="3" GridPane.rowIndex="7" />
         <TextField fx:id="fldRe" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-        <Label text="Лекции" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-            <GridPane.margin>
-                <Insets right="10.0" />
-            </GridPane.margin>
-        </Label>
+        <ChoiceBox fx:id="choTerm" prefWidth="150" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+
     </children>
 </GridPane>

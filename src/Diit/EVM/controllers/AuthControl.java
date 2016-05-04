@@ -50,7 +50,7 @@ public class AuthControl {
             @Override
             public void run() {
                 fldLog.requestFocus();
-                createMain();
+               // createMain();
             }
         });
     }
@@ -68,14 +68,19 @@ public class AuthControl {
         dbWorker.getUsersFromDB();
 
         int sz = dbWorker.userAuthList.size();
-        int i =0;
+        int i = 0;
         for (UserAuth user : dbWorker.userAuthList){
-            i= i+1;
+            i = i+1;
             if ((fldLog.getText().equals(user.getLogin()))&&(fldPsw.getText().equals(user.getPsw()))) {
-                createMain();
+                if (i == 1){
+                    createMain();
+                } else {
+                    createUser(user.getName());
+                }
+
                 break;
             } else {
-                if (i==sz) {
+                if (i == sz) {
                 Alert alert = new Alert(Alert.AlertType.NONE, "Неправильный логин или пароль", ButtonType.OK);
                 alert.setTitle("Ошибка");
                 alert.show();
@@ -84,6 +89,26 @@ public class AuthControl {
             }
         }
     }
+
+    private void createUser(String userName) {
+        mainStage = new Stage();
+        try {
+            fxmlLoader.setLocation(getClass().getResource("../view/user.fxml"));
+            fxmlMain = fxmlLoader.load();
+            mainControl = fxmlLoader.getController();
+        } catch (IOException e) {e.printStackTrace();}
+        mainControl.setMainStage(mainStage);
+        mainControl.closeConn();
+        mainControl.initUser(userName);
+        mainStage.setTitle("EVM");
+        mainStage.getIcons().add(new Image("file:resources/images/icon.png"));
+        mainStage.setScene(new Scene(fxmlMain, 600, 400));
+        mainStage.show();
+        if (authStage != null){
+            authStage.close();
+        }
+    }
+
     /**
      * Создает главное окно c контроллером {@link MainControl}
      */
@@ -96,6 +121,7 @@ public class AuthControl {
         } catch (IOException e) {e.printStackTrace();}
         mainControl.setMainStage(mainStage);
         mainControl.closeConn();
+        mainControl.init();
         mainStage.setTitle("EVM");
         mainStage.getIcons().add(new Image("file:resources/images/icon.png"));
         mainStage.setScene(new Scene(fxmlMain, 600, 400));

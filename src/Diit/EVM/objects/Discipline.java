@@ -1,5 +1,7 @@
 package Diit.EVM.objects;
 
+import Diit.EVM.controllers.MainControl;
+import Diit.EVM.models.DbWorker;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -7,6 +9,9 @@ import javafx.beans.property.SimpleStringProperty;
  * Created by Alexey on 03.03.2016.
  */
 public class Discipline {
+
+    private DbWorker dbWorker = DbWorker.getInstance();
+
     private SimpleIntegerProperty disciplineId;
     private SimpleIntegerProperty learningYearId;
     private SimpleStringProperty disciplineName;
@@ -281,6 +286,16 @@ public class Discipline {
 
     @Override
     public String toString() {
-        return getDisciplineName();
+        return getDisciplineName()+"    "+getTotalLoads()+" / "+getTotal();
+    }
+
+    private int getTotalLoads() {
+        dbWorker.getLecturersLoadFromDB(this, dbWorker.learningYears.get(getLearningYearId()-1));
+        int s = 0;
+        for (LecturersLoad load:
+                dbWorker.lecturersLoads) {
+            s += load.getTotal();
+        }
+        return s;
     }
 }

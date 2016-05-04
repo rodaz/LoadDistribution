@@ -28,10 +28,12 @@ public class LecturersLoad {
     private SimpleIntegerProperty hourMod;
     private SimpleIntegerProperty total;
     private SimpleStringProperty remark;
+    private SimpleIntegerProperty term;
 
     public LecturersLoad(int lecturersLoadId, int learningYearId, int lecturerId, String lecturerName, int disciplineId, String disciplineName,
                          int hourLect, int hourLab, int hourPracW, int hourCons, int hourCour, int hourRev, int hourCred,
-                         int hourExam, int hourPrac, int hourThes, int hourGrad, int hourInd, int hourMod, int total, String remark) {
+                         int hourExam, int hourPrac, int hourThes, int hourGrad, int hourInd, int hourMod, int total,
+                         String remark, int term) {
         this.disciplineId = new SimpleIntegerProperty(disciplineId);
         this.learningYearId = new SimpleIntegerProperty(learningYearId);
         this.lecturersLoadId = new SimpleIntegerProperty(lecturersLoadId);
@@ -53,6 +55,7 @@ public class LecturersLoad {
         this.hourMod = new SimpleIntegerProperty(hourMod);
         this.total = new SimpleIntegerProperty(total);
         this.remark = new SimpleStringProperty(remark);
+        this.term = new SimpleIntegerProperty(term);
     }
 
     public int getLecturersLoadId() {
@@ -305,6 +308,18 @@ public class LecturersLoad {
 
     public void setLecturerName(String lecturerName) {
         this.lecturerName.set(lecturerName);
+    }
+
+    public int getTerm() {
+        return term.get();
+    }
+
+    public SimpleIntegerProperty termProperty() {
+        return term;
+    }
+
+    public void setTerm(int term) {
+        this.term.set(term);
     }
 
     @Override

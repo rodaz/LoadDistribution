@@ -6,6 +6,8 @@ import Diit.EVM.objects.LearningYear;
 import Diit.EVM.objects.Lecturer;
 import Diit.EVM.objects.LecturersLoad;
 import Diit.EVM.util.Convert;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -22,6 +24,8 @@ public class AddLoadControl {
     private ChoiceBox<Discipline> choDisc;
     @FXML
     private ChoiceBox<Lecturer> choLect;
+    @FXML
+    private ChoiceBox choTerm;
     @FXML
     private TextField fldLect;
     @FXML
@@ -63,6 +67,7 @@ public class AddLoadControl {
         choYear.setItems(dbWorker.learningYears);
         choDisc.setItems(dbWorker.disciplines);
         choLect.setItems(dbWorker.lecturers);
+        choTerm.setItems(FXCollections.observableArrayList(1,2));
     }
 
     public void setDefault(LearningYear year, Lecturer lect, Discipline disc){
@@ -95,7 +100,8 @@ public class AddLoadControl {
                 Convert.rend(fldInd.getText()),
                 Convert.rend(fldMod.getText()),
                 0,
-                fldRe.getText()
+                fldRe.getText(),
+                (Integer) choTerm.getSelectionModel().getSelectedItem()
         );
         dbWorker.addLoadToDB(load);
         cancelNewLoad();

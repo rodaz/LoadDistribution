@@ -1,15 +1,14 @@
 package Diit.EVM.controllers;
 
 import Diit.EVM.models.DbWorker;
-import Diit.EVM.objects.Discipline;
-import Diit.EVM.objects.LearningYear;
-import Diit.EVM.objects.Lecturer;
-import Diit.EVM.objects.LecturersLoad;
+import Diit.EVM.objects.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -26,19 +25,29 @@ import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * Created by Alexey on 02.03.2016.
  */
 public class MainControl {
+    private String lastAction;
+    private final String LOAD_DISC = "LOAD_DISC";
+    private final String LOAD_LECT = "LOAD_LECT";
+    @FXML
+    private ListView<LearningYear> listOfUsersLearningYears;
     @FXML
     private BorderPane pane;
     @FXML
     private Pane pnHome;
     @FXML
+    private BorderPane paneUser;
+    @FXML
     private ListView<LearningYear> listOfLearningYears;
     @FXML
     private MenuBar mnMain;
+    @FXML
+    private Button btnAddUser;
     @FXML
     private Button btnAddYear;
     @FXML
@@ -48,6 +57,8 @@ public class MainControl {
     @FXML
     private Button btnAddLoad;
     @FXML
+    private Button btnSaveUser;
+    @FXML
     private Button btnSaveYear;
     @FXML
     private Button btnSaveDisc;
@@ -55,6 +66,8 @@ public class MainControl {
     private Button btnSaveLect;
     @FXML
     private Button btnSaveLoad;
+    @FXML
+    private Button btnDelUser;
     @FXML
     private Button btnDelYear;
     @FXML
@@ -65,13 +78,16 @@ public class MainControl {
     private Button btnDelLoad;
     @FXML
     private Button btnRest;
+    @FXML
+    private Button btnPrint;
 
-    TableView<Lecturer> tableOfLecturers = new TableView<>();
-    TableView<Discipline> tableOfDisciplines = new TableView<>();
-    TableView<LecturersLoad> tableOfLoadLect = new TableView<>();
-    TableView<LecturersLoad> tableOfLoadDisc = new TableView<>();
-    ListView<Lecturer> listOfLecturers = new ListView<>();
-    ListView<Discipline> listOfDisciplines = new ListView<>();
+    private TableView<UserAuth> tableOfUsers = new TableView<>();
+    private TableView<Lecturer> tableOfLecturers = new TableView<>();
+    private TableView<Discipline> tableOfDisciplines = new TableView<>();
+    private TableView<LecturersLoad> tableOfLoadLect = new TableView<>();
+    private TableView<LecturersLoad> tableOfLoadDisc = new TableView<>();
+    private ListView<Lecturer> listOfLecturers = new ListView<>();
+    private ListView<Discipline> listOfDisciplines = new ListView<>();
 
     private DbWorker dbWorker = DbWorker.getInstance();
     private Stage mainStage;
@@ -86,15 +102,14 @@ public class MainControl {
 
     public void setMainStage(Stage mainStage) {this.mainStage = mainStage;}
 
-    @FXML
-    private void initialize(){
+
+    public void init(){
         hideAllButtons();   //скрываем все кнопки
         viewYears();    //отображаем список годов
         initListeners();    //инициализация слушателей
 
         Cell<String> cell = new Cell<>();
         cell.getItem();
-
     }
 
     /**
@@ -105,14 +120,17 @@ public class MainControl {
         btnAddYear.setVisible(false);
         btnAddLect.setVisible(false);
         btnAddLoad.setVisible(false);
+        btnAddUser.setVisible(false);
         btnSaveDisc.setVisible(false);
         btnSaveLect.setVisible(false);
         btnSaveLoad.setVisible(false);
         btnSaveYear.setVisible(false);
+        btnSaveUser.setVisible(false);
         btnDelDisc.setVisible(false);
         btnDelLect.setVisible(false);
         btnDelLoad.setVisible(false);
         btnDelYear.setVisible(false);
+        btnDelUser.setVisible(false);
     }
 
     /**
@@ -236,7 +254,7 @@ public class MainControl {
     /**
      * Отображение таблицы нагрузки лекторов
      */
-    public void tableViewLoadForLecturer() {
+    private void tableViewLoadForLecturer() {
         dbWorker.getLecturersLoadFromDB(selectedLecturer, selectedYear); // нагрузка с базы данных по выбранному лектору
         if (tableOfLoadLect.getItems().size() == 0){ //если не создана ещё таблица нагрузки
             createTableOfLoadLect(); //создаем таблицу нагрузки
@@ -244,6 +262,7 @@ public class MainControl {
         pane.setCenter(tableOfLoadLect); //таблицу нагрузки помещаем в корневой контейнер
         hideAllButtons();
         showLoadButtons();
+        lastAction = LOAD_LECT;
     }
 
     /**
@@ -261,11 +280,25 @@ public class MainControl {
         btnSaveLect.setVisible(true);
         btnDelLect.setVisible(true);
     }
+    /**
+     * Отобрадение таблицы пользователей
+    */
+    public void viewUsers(){
+        dbWorker.getUsersFromDB();
+        if (tableOfUsers.getItems().size() == 0){
+            createTableOfUsers();
+        }
+        pane.setCenter(tableOfUsers);
+        hideAllButtons();
+        btnAddUser.setVisible(true);
+        btnSaveUser.setVisible(true);
+        btnDelUser.setVisible(true);
+    }
 
     /**
      * Отображение нагрузки лекторов по определённому предмету
     */
-    public void tableViewLoadForDiscipline(){
+    private void tableViewLoadForDiscipline(){
         dbWorker.getLecturersLoadFromDB(selectedDiscipline, selectedYear);
         if (tableOfLoadDisc.getItems().size() == 0){
             createTableOfLoadDisc();
@@ -273,6 +306,7 @@ public class MainControl {
         pane.setCenter(tableOfLoadDisc);
         hideAllButtons();
         showLoadButtons();
+        lastAction = LOAD_DISC;
     }
     /**
      * Отображение кнопок нагрузки.
@@ -526,6 +560,28 @@ public class MainControl {
                 hourConsCol, hourCourCol, hourRevCol, hourCredCol, hourExamCol, hourPracCol, hourThesCol, hourGradCol,
                 hourIndCol, hourModCol, totalCol, remarkCol);
     }
+
+    /**
+     * Создание таблицы пользователей
+    */
+    private void createTableOfUsers(){
+        TableColumn<UserAuth, String> nameCol = new TableColumn<>("ФИО");
+        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
+        nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        TableColumn<UserAuth, String> logCol = new TableColumn<>("Логин");
+        logCol.setCellValueFactory(new PropertyValueFactory("login"));
+        logCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        TableColumn<UserAuth, String> pswCol = new TableColumn<>("Пароль");
+        pswCol.setCellValueFactory(new PropertyValueFactory("psw"));
+        pswCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        tableOfUsers.setItems(dbWorker.userAuthList);
+        tableOfUsers.setEditable(true);
+        tableOfUsers.getColumns().setAll(nameCol, logCol, pswCol);
+    }
+
     /**
      * Вешаем слушатель закрытия окна.
      * Что-бы при закрытии закрывалось соединение с БД.
@@ -538,6 +594,7 @@ public class MainControl {
                 btnSaveDiscAction();
                 btnSaveLectAction();
                 btnSaveLoadAction();
+                btnSaveUserAction();
                 try {
                     dbWorker.conn.close();
                 } catch (SQLException e) {
@@ -638,6 +695,11 @@ public class MainControl {
         addLoadStage.initModality(Modality.WINDOW_MODAL);
         addLoadStage.initOwner(mainStage);
         addLoadStage.showAndWait();
+        if (lastAction.equals(LOAD_LECT)){
+            tableViewLoadForLecturer();
+        } else {
+            tableViewLoadForDiscipline();
+        }
     }
 
     public void btnSaveYearAction() {
@@ -699,5 +761,100 @@ public class MainControl {
             load = tableOfLoadLect.getSelectionModel().getSelectedItem();
         }
         dbWorker.delLoadFromDB(load);
+    }
+
+    private void printTable(TableView table){
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.LANDSCAPE, Printer.MarginType.DEFAULT);
+        PrinterJob job = PrinterJob.createPrinterJob();
+        job.getJobSettings().setPageLayout(pageLayout);
+        if (job != null) {
+            boolean success = job.printPage(table);
+            if (success) {
+                job.endJob();
+            }
+        }
+    }
+
+    public void printLecturers(){
+        if (tableOfLecturers.getItems().size() != 0) {
+            printTable(tableOfLecturers);
+        }
+    }
+
+    public void printDisciplines(){
+        if (tableOfDisciplines.getItems().size() != 0) {
+            printTable(tableOfDisciplines);
+        }
+    }
+
+    public void printLoads(){
+        if (lastAction.equals(LOAD_LECT)){
+            if (tableOfLoadLect.getItems().size() != 0) {
+                printTable(tableOfLoadLect);
+            }
+        } else {
+            if (tableOfLoadDisc.getItems().size() != 0) {
+                printTable(tableOfLoadDisc);
+            }
+        }
+    }
+
+    public void btnAddUserAction(){
+        Stage addUserStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent fxmlAddUser = null;
+        AddUserControl addUserControl = null;
+        try {
+            fxmlLoader.setLocation(getClass().getResource("../view/addUser.fxml"));
+            fxmlAddUser = fxmlLoader.load();
+            addUserControl = fxmlLoader.getController();
+        } catch (IOException e) {e.printStackTrace();}
+        addUserControl.setAddUserStage(addUserStage);
+        addUserStage.setTitle("Добавить");
+        addUserStage.setScene(new Scene(fxmlAddUser, 300, 300));
+        addUserStage.setResizable(false);
+        addUserStage.initModality(Modality.WINDOW_MODAL);
+        addUserStage.initOwner(mainStage);
+        addUserStage.showAndWait();
+    }
+
+    public void btnSaveUserAction(){
+        for (UserAuth user:
+             dbWorker.userAuthList) {
+            dbWorker.updateUserInDB(user);
+        }
+    }
+
+    public void btnDelUserAction() {
+        dbWorker.delUserFromDB(tableOfUsers.getSelectionModel().getSelectedItem());
+    }
+
+    public void btnPrintLoadForUser(){
+        printTable(tableOfLoadLect);
+    }
+
+    public void initUser(String userName) {
+        dbWorker.getLearningYearsFromDB();
+        listOfUsersLearningYears.setItems(dbWorker.learningYears);
+        listOfUsersLearningYears.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2){
+                    selectedYear = listOfUsersLearningYears.getSelectionModel().getSelectedItem();
+                    viewLoadForUser(userName);
+                    btnRest.setDisable(false);
+                    btnPrint.setVisible(true);
+                    mainStage.setTitle(selectedYear.toString());
+                }
+            }
+        });
+    }
+
+    private void viewLoadForUser(String userName) {
+        dbWorker.getLecturerFromDB(selectedYear, userName);
+        dbWorker.getLecturersLoadFromDB(dbWorker.lecturers.get(0), selectedYear);
+        createTableOfLoadLect();
+        paneUser.setCenter(tableOfLoadLect);
     }
 }

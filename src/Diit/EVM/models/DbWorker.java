@@ -2,6 +2,7 @@ package Diit.EVM.models;
 
 import Diit.EVM.objects.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
@@ -27,7 +28,7 @@ public final class DbWorker {
     public ObservableList<LearningYear> learningYears = FXCollections.observableArrayList();
     public ObservableList<String> ranks = FXCollections.observableArrayList("Ассистент","Ст. преподаватель",
             "Доцент","Профессор","Зав. кафедры");
-    public List<UserAuth> userAuthList = new ArrayList<>();
+    public ObservableList<UserAuth> userAuthList = FXCollections.observableArrayList();
 
     private DbWorker(){
         try {
@@ -37,6 +38,27 @@ public final class DbWorker {
             e.printStackTrace();
         }
 
+        disciplines.addListener(new ListChangeListener<Discipline>() {
+            @Override
+            public void onChanged(Change<? extends Discipline> c) {
+                for (Discipline disc: disciplines) {
+                    disc.setTotal(disc.getHourCons()+disc.getHourMod()+disc.getHourInd()+disc.getHourGrad()+disc.getHourCour()+
+                        disc.getHourCred()+disc.getHourExam()+disc.getHourLab()+disc.getHourPrac()+disc.getHourPracW()+
+                        disc.getHourLect()+disc.getHourRev()+disc.getHourThes());
+                }
+            }
+        });
+
+        lecturersLoads.addListener(new ListChangeListener<LecturersLoad>() {
+            @Override
+            public void onChanged(Change<? extends LecturersLoad> c) {
+                for (LecturersLoad load: lecturersLoads) {
+                    load.setTotal(load.getHourCons()+load.getHourMod()+load.getHourInd()+load.getHourGrad()+load.getHourCour()+
+                            load.getHourCred()+load.getHourExam()+load.getHourLab()+load.getHourPrac()+load.getHourPracW()+
+                            load.getHourLect()+load.getHourRev()+load.getHourThes());
+                }
+            }
+        });
     }
 
     public static DbWorker getInstance(){
@@ -92,9 +114,46 @@ public final class DbWorker {
             lecturersLoads.clear();
             while (res.next()){
                 lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), null, res.getInt(4),
-                        res.getString(22), res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9),
+                        res.getString(23), res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9),
                         res.getInt(10), res.getInt(11), res.getInt(12), res.getInt(13), res.getInt(14), res.getInt(15),
-                        res.getInt(16), res.getInt(17), res.getInt(18), res.getString(19)));
+                        res.getInt(16), res.getInt(17), res.getInt(18), res.getString(19), res.getInt(20)));
+            }
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void getLecturerFromDB(LearningYear learningYear, String userName){
+        try {
+            stmt = conn.createStatement();
+            res = stmt.executeQuery("SELECT * FROM Lecturer WHERE Lecturer.learnYearId = "+ learningYear.getLearningYearId()+
+                " AND Lecturer.lectName = '"+userName+"' ");
+            lecturers.clear();
+            while (res.next()){
+                lecturers.add(new Lecturer(res.getInt(1), res.getInt(2), res.getString(3), res.getDouble(4),
+                        res.getString(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getString(9)));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try { res.close();} catch (SQLException e) {e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e) {e.printStackTrace();}
+        }
+    }
+
+    public void getLecturersLoadFromDB(LearningYear selectedYear){
+        try {
+            stmt = conn.createStatement();
+            res = stmt.executeQuery("SELECT * FROM LecturersLoad "+
+                    "WHERE  LecturersLoad.learnYearId="+selectedYear.getLearningYearId());
+            lecturersLoads.clear();
+            while (res.next()){
+                lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), null, res.getInt(4),
+                        null, res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9),
+                        res.getInt(10), res.getInt(11), res.getInt(12), res.getInt(13), res.getInt(14), res.getInt(15),
+                        res.getInt(16), res.getInt(17), res.getInt(18), res.getString(19), res.getInt(20)));
             }
         } catch (SQLException e) {e.printStackTrace();}
         finally {
@@ -111,10 +170,10 @@ public final class DbWorker {
                     selectedYear.getLearningYearId());
             lecturersLoads.clear();
             while (res.next()){
-                lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), res.getString(22), res.getInt(4),
+                lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), res.getString(23), res.getInt(4),
                         null, res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9),
                         res.getInt(10), res.getInt(11), res.getInt(12), res.getInt(13), res.getInt(14), res.getInt(15),
-                        res.getInt(16), res.getInt(17), res.getInt(18), res.getString(19)));
+                        res.getInt(16), res.getInt(17), res.getInt(18), res.getString(19), res.getInt(20)));
             }
         } catch (SQLException e) {e.printStackTrace();}
         finally {
@@ -129,11 +188,24 @@ public final class DbWorker {
             res = stmt.executeQuery("SELECT * FROM UserAuth");
             userAuthList.clear();
             while (res.next()){
-                userAuthList.add(new UserAuth(res.getString(2), res.getString(3), res.getString(4)));
+                userAuthList.add(new UserAuth(res.getInt(1), res.getString(2), res.getString(3), res.getString(4)));
             }
         } catch (SQLException e) {e.printStackTrace();}
         finally {
             try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void addUserToDB(UserAuth user){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO UserAuth (name, login, psw) VALUES ('"+user.getName()+"' , '"+
+                    user.getLogin()+"' , '"+user.getPsw()+"')");
+            userAuthList.add(user);
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -160,13 +232,12 @@ public final class DbWorker {
             stmt.executeUpdate("INSERT INTO LearningYear (interval, quanRate, hourAssist, hourSenior, hourDocent, hourProf,"+
                     " hourChief, loadData, remark) VALUES ('"+year.getInterval()+"' , "+year.getQuanRate()+" , "+
                     year.getHourAssistant()+" , "+year.getHourSenior()+" , "+year.getHourDocent()+" , "+
-                    year.getHourProfessor()+" , "+year.getHourChief()+" , "+year.getLoadData()+" , '"+
+                    year.getHourProfessor()+" , "+year.getHourChief()+" , '"+year.getLoadData()+"' , '"+
                     year.getRemark()+"' )");
             learningYears.add(year);
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -185,12 +256,14 @@ public final class DbWorker {
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
 
     public void delYearFromDB(LearningYear year){
+        delLoad(year);
+        delDisc(year);
+        delLect(year);
         try {
             stmt = conn.createStatement();
             stmt.executeUpdate("DELETE FROM LearningYear WHERE learnYearId="+year.getLearningYearId());
@@ -198,7 +271,39 @@ public final class DbWorker {
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    private void delLect(LearningYear year){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM Lecturer WHERE learnYearId="+year.getLearningYearId());
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    private void delDisc(LearningYear year){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM Discipline WHERE learnYearId="+year.getLearningYearId());
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    private void delLoad(LearningYear year){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM LecturersLoad WHERE learnYearId="+year.getLearningYearId());
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -211,7 +316,6 @@ public final class DbWorker {
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -220,12 +324,12 @@ public final class DbWorker {
         try {
             stmt = conn.createStatement();
             query = "INSERT INTO LecturersLoad (learnYearId, lectId, discipId, hourLect, hourLab, hourPracW,"+
-                    " hourCons, hourCour, hourRev, hourCred, hourExam, hourPrac, hourThes, hourGrad, hourInd, hourMod, total, remark)"+
+                    " hourCons, hourCour, hourRev, hourCred, hourExam, hourPrac, hourThes, hourGrad, hourInd, hourMod, total, remark, term)"+
                     " VALUES ("+load.getLearningYearId()+" , "+load.getLecturerId()+" , "+load.getDisciplineId()+" , "+
                     load.getHourLect()+" , "+load.getHourLab()+" , "+load.getHourPracW()+" , "+load.getHourCons()+
                     " , "+load.getHourCour()+" , "+load.getHourRev()+" , "+load.getHourCred()+" , "+load.getHourExam()+
                     " , "+load.getHourPrac()+" , "+load.getHourThes()+" , "+load.getHourGrad()+" , "+
-                    load.getHourInd()+" , "+load.getHourMod()+" , "+load.getTotal()+" , '"+load.getRemark()+"' )";
+                    load.getHourInd()+" , "+load.getHourMod()+" , "+load.getTotal()+" , '"+load.getRemark()+"' , "+load.getTerm()+" )";
             stmt.executeUpdate(query);
             lecturersLoads.add(load);
             conn.commit();
@@ -234,7 +338,6 @@ public final class DbWorker {
             System.out.println(query);
         }
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -247,7 +350,6 @@ public final class DbWorker {
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -267,7 +369,18 @@ public final class DbWorker {
             System.out.println(query);
         }
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void delUserFromDB(UserAuth user){
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM UserAuth WHERE authId="+user.getAuthId());
+            userAuthList.remove(user);
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -280,7 +393,6 @@ public final class DbWorker {
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -297,7 +409,19 @@ public final class DbWorker {
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
+            try { stmt.close();} catch (SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void updateUserInDB(UserAuth user){
+        try {
+            stmt = conn.createStatement();
+            query = "UPDATE UserAuth SET name = '"+user.getName()+"' , login = '"+user.getLogin()+
+                    "' , psw = '"+user.getPsw()+"' WHERE authId="+user.getAuthId();
+            stmt.executeUpdate(query);
+            conn.commit();
+        } catch (SQLException e) {e.printStackTrace();}
+        finally {
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -313,7 +437,6 @@ public final class DbWorker {
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -333,7 +456,6 @@ public final class DbWorker {
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
@@ -348,12 +470,11 @@ public final class DbWorker {
                     " , hourCred = "+lecturersLoad.getHourCred()+" , hourExam = "+lecturersLoad.getHourExam()+" , hourPrac = "+
                     lecturersLoad.getHourPrac()+" , hourThes = "+lecturersLoad.getHourThes()+" , hourGrad = "+lecturersLoad.getHourGrad()+
                     " , hourInd = "+lecturersLoad.getHourInd()+" , hourMod = "+lecturersLoad.getHourMod()+" , total = "+lecturersLoad.getTotal()+
-                    " , remark = '" + lecturersLoad.getRemark()+"' WHERE lectLoadId="+lecturersLoad.getLecturersLoadId();
+                    " , remark = '" + lecturersLoad.getRemark()+"' , term = "+lecturersLoad.getTerm()+" WHERE lectLoadId="+lecturersLoad.getLecturersLoadId();
             stmt.executeUpdate(query);
             conn.commit();
         } catch (SQLException e) {e.printStackTrace();}
         finally {
-            try { res.close();} catch (SQLException e){e.printStackTrace();}
             try { stmt.close();} catch (SQLException e){e.printStackTrace();}
         }
     }
