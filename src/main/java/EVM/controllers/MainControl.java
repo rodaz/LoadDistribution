@@ -243,7 +243,6 @@ public class MainControl {
     public void tableViewDisciplines() {
         mainStage.setTitle(selectedYear.getInterval());
         dbWorker.getDisciplinesFromDB(selectedYear);
-        System.out.println(dbWorker.disciplines);
         if (tableOfDisciplines.getItems().size() == 0){
             createTableOfDisciplines();
         }
@@ -259,6 +258,7 @@ public class MainControl {
      */
     private void tableViewLoadForLecturer() {
         dbWorker.getLecturersLoadFromDB(selectedLecturer, selectedYear); // нагрузка с базы данных по выбранному лектору
+        addTermsToLoad();
         if (tableOfLoadLect.getItems().size() == 0){ //если не создана ещё таблица нагрузки
             createTableOfLoadLect(); //создаем таблицу нагрузки
         }
