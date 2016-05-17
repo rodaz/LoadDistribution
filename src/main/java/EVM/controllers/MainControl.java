@@ -1,5 +1,6 @@
 package main.java.EVM.controllers;
 
+import javafx.util.Callback;
 import main.java.EVM.models.DbWorker;
 import main.java.EVM.objects.*;
 import javafx.event.EventHandler;
@@ -302,6 +303,7 @@ public class MainControl {
     */
     private void tableViewLoadForDiscipline(){
         dbWorker.getLecturersLoadFromDB(selectedDiscipline, selectedYear);
+        addTermsToLoad();
         if (tableOfLoadDisc.getItems().size() == 0){
             createTableOfLoadDisc();
         }
@@ -310,6 +312,80 @@ public class MainControl {
         showLoadButtons();
         lastAction = LOAD_DISC;
     }
+
+    private void addTermsToLoad() {
+        LecturersLoad lastFirstTerm = null;
+        LecturersLoad lastSecondTerm = null;
+        for (LecturersLoad load:
+        dbWorker.lecturersLoads) {
+            if (load.getTerm() == 1){
+                lastFirstTerm = load;
+            } else {
+                lastSecondTerm = load;
+            }
+        }
+        int indexFirst = dbWorker.lecturersLoads.lastIndexOf(lastFirstTerm);
+        LecturersLoad totalFirstTerm = firstTerm(indexFirst, lastFirstTerm);
+        dbWorker.lecturersLoads.add(indexFirst+1, totalFirstTerm);
+        LecturersLoad totalSecondTerm = secondTerm(indexFirst+2, lastSecondTerm);
+        dbWorker.lecturersLoads.add(totalSecondTerm);
+        dbWorker.lecturersLoads.add(new LecturersLoad(0, 0, 0, "Всего за год", 0, "Всего за год",
+                totalFirstTerm.getHourLect()+totalSecondTerm.getHourLect(), totalFirstTerm.getHourLab()+totalSecondTerm.getHourLab(),
+                totalFirstTerm.getHourPracW()+totalSecondTerm.getHourPracW(), totalFirstTerm.getHourCons()+totalSecondTerm.getHourCons(),
+                totalFirstTerm.getHourCour()+totalSecondTerm.getHourCour(), totalFirstTerm.getHourRev()+totalSecondTerm.getHourRev(),
+                totalFirstTerm.getHourCred()+totalSecondTerm.getHourCred(), totalFirstTerm.getHourExam()+totalSecondTerm.getHourExam(),
+                totalFirstTerm.getHourPrac()+totalSecondTerm.getHourPrac(), totalFirstTerm.getHourThes()+totalSecondTerm.getHourThes(),
+                totalFirstTerm.getHourGrad()+totalSecondTerm.getHourGrad(), totalFirstTerm.getHourInd()+totalSecondTerm.getHourInd(),
+                totalFirstTerm.getHourMod()+totalSecondTerm.getHourMod(), totalFirstTerm.getTotal()+totalSecondTerm.getTotal(),null, 0));
+    }
+
+    private LecturersLoad secondTerm(int beginThis, LecturersLoad lastSecondTerm) {
+        int lect = 0, lab = 0, pracw = 0, cons=0, cour=0, rev=0, cred=0, exam=0, prac=0, thes=0, grad=0, ind=0, mod=0, total=0;
+        for (int i=beginThis; i < dbWorker.lecturersLoads.size(); i++){
+            LecturersLoad ishak = dbWorker.lecturersLoads.get(i);
+            lect += ishak.getHourLect();
+            lab += ishak.getHourLab();
+            pracw += ishak.getHourPracW();
+            cons += ishak.getHourCons();
+            cour += ishak.getHourCour();
+            rev += ishak.getHourRev();
+            cred += ishak.getHourCred();
+            exam += ishak.getHourExam();
+            prac += ishak.getHourPrac();
+            thes += ishak.getHourThes();
+            grad += ishak.getHourGrad();
+            ind += ishak.getHourInd();
+            mod += ishak.getHourMod();
+            total += ishak.getTotal();
+        }
+        return new LecturersLoad(0, 0, 0, "Всего за 2 семестр", 0, "Всего за 2 семестр",
+                lect, lab, pracw, cons, cour, rev, cred, exam, prac, thes, grad, ind, mod, total, null, 0);
+
+    }
+
+    private LecturersLoad firstTerm(int indexFirst, LecturersLoad lastFirstTerm){
+        int lect = 0, lab = 0, pracw = 0, cons=0, cour=0, rev=0, cred=0, exam=0, prac=0, thes=0, grad=0, ind=0, mod=0, total=0;
+        for (int i=0; i <= indexFirst; i++){
+            LecturersLoad ishak = dbWorker.lecturersLoads.get(i);
+            lect += ishak.getHourLect();
+            lab += ishak.getHourLab();
+            pracw += ishak.getHourPracW();
+            cons += ishak.getHourCons();
+            cour += ishak.getHourCour();
+            rev += ishak.getHourRev();
+            cred += ishak.getHourCred();
+            exam += ishak.getHourExam();
+            prac += ishak.getHourPrac();
+            thes += ishak.getHourThes();
+            grad += ishak.getHourGrad();
+            ind += ishak.getHourInd();
+            mod += ishak.getHourMod();
+            total += ishak.getTotal();
+            }
+        return new LecturersLoad(0, 0, 0, "Всего за 1 семестр", 0, "Всего за 1 семестр",
+                lect, lab, pracw, cons, cour, rev, cred, exam, prac, thes, grad, ind, mod, total, null, 0);
+    }
+
     /**
      * Отображение кнопок нагрузки.
      * Вынесены в отдельный метод так как используются два раза.

@@ -50,7 +50,7 @@ public class AuthControl {
             @Override
             public void run() {
                 fldLog.requestFocus();
-               // createMain();
+                createMain(); //TODO закомментить перед релизом
             }
         });
     }

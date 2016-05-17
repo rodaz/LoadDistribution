@@ -107,7 +107,7 @@ public final class DbWorker {
             stmt = conn.createStatement();
             res = stmt.executeQuery("SELECT * FROM LecturersLoad JOIN Discipline ON LecturersLoad.discipId=Discipline.discipId "+
                                 "WHERE LecturersLoad.lectId = "+selectedLecturer.getLecturerId()+" AND LecturersLoad.learnYearId="+
-                                selectedYear.getLearningYearId());
+                                selectedYear.getLearningYearId()+" ORDER BY term");
             lecturersLoads.clear();
             while (res.next()){
                 lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), null, res.getInt(4),
@@ -144,7 +144,7 @@ public final class DbWorker {
         try {
             stmt = conn.createStatement();
             res = stmt.executeQuery("SELECT * FROM LecturersLoad "+
-                    "WHERE  LecturersLoad.learnYearId="+selectedYear.getLearningYearId());
+                    "WHERE  LecturersLoad.learnYearId="+selectedYear.getLearningYearId()+" ORDER BY term");
             lecturersLoads.clear();
             while (res.next()){
                 lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), null, res.getInt(4),
@@ -164,7 +164,7 @@ public final class DbWorker {
             stmt = conn.createStatement();
             res = stmt.executeQuery("SELECT * FROM LecturersLoad JOIN Lecturer ON LecturersLoad.lectId=Lecturer.lectId "+
                     "WHERE LecturersLoad.discipId = "+selectedDiscipline.getDisciplineId()+" AND LecturersLoad.learnYearId="+
-                    selectedYear.getLearningYearId());
+                    selectedYear.getLearningYearId()+" ORDER BY term");
             lecturersLoads.clear();
             while (res.next()){
                 lecturersLoads.add(new LecturersLoad(res.getInt(1), res.getInt(2), res.getInt(3), res.getString(23), res.getInt(4),
