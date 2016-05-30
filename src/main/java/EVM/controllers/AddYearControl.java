@@ -60,6 +60,7 @@ public class AddYearControl {
       if (bool.equals(true)){
           copyFromLastYear();
       }
+      dbWorker.getLearningYearsFromDB();
       cancelNewYear();
     }
 
