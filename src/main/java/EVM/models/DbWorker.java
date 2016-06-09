@@ -400,7 +400,7 @@ public final class DbWorker {
             query = "UPDATE LearningYear SET interval = '"+newYear.getInterval()+"' , quanRate = "+newYear.getQuanRate()+
                     " , hourAssist = "+newYear.getHourAssistant()+" , hourSenior = "+newYear.getHourSenior()+" , hourDocent = " +
                     +newYear.getHourDocent()+", hourProf = "+newYear.getHourProfessor()+" , hourChief = "+newYear.getHourChief()+
-                    " , loadData = "+newYear.getLoadData()+" , remark = '"+newYear.getRemark()+
+                    " , loadData = '"+newYear.getLoadData()+"' , remark = '"+newYear.getRemark()+
                     "' WHERE learnYearId="+newYear.getLearningYearId();
             stmt.executeUpdate(query);
             conn.commit();
