@@ -337,6 +337,7 @@ public class MainControl {
                 totalFirstTerm.getHourPrac()+totalSecondTerm.getHourPrac(), totalFirstTerm.getHourThes()+totalSecondTerm.getHourThes(),
                 totalFirstTerm.getHourGrad()+totalSecondTerm.getHourGrad(), totalFirstTerm.getHourInd()+totalSecondTerm.getHourInd(),
                 totalFirstTerm.getHourMod()+totalSecondTerm.getHourMod(), totalFirstTerm.getTotal()+totalSecondTerm.getTotal(),null, 0));
+
     }
 
     private LecturersLoad secondTerm(int beginThis, LecturersLoad lastSecondTerm) {
@@ -932,6 +933,7 @@ public class MainControl {
     private void viewLoadForUser(String userName) {
         dbWorker.getLecturerFromDB(selectedYear, userName);
         dbWorker.getLecturersLoadFromDB(dbWorker.lecturers.get(0), selectedYear);
+        addTermsToLoad();
         createTableOfLoadLect();
         tableOfLoadLect.setEditable(false);
         paneUser.setCenter(tableOfLoadLect);

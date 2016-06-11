@@ -1,5 +1,6 @@
 package main.java.EVM.controllers;
 
+import main.java.EVM.Main;
 import main.java.EVM.models.DbWorker;
 import main.java.EVM.objects.UserAuth;
 import javafx.application.Platform;
@@ -93,7 +94,7 @@ public class AuthControl {
     public void createUser(String userName) {
         mainStage = new Stage();
         try {
-            fxmlLoader.setLocation(getClass().getResource("../view/user.fxml"));
+            fxmlLoader.setLocation(Main.class.getResource("view/user.fxml"));
             fxmlMain = fxmlLoader.load();
             mainControl = fxmlLoader.getController();
         } catch (IOException e) {e.printStackTrace();}
@@ -116,7 +117,7 @@ public class AuthControl {
     public void createMain() {
         mainStage = new Stage();
         try {
-            fxmlLoader.setLocation(getClass().getResource("../view/main.fxml"));
+            fxmlLoader.setLocation(Main.class.getResource("view/main.fxml"));
             fxmlMain = fxmlLoader.load();
             mainControl = fxmlLoader.getController();
         } catch (IOException e) {e.printStackTrace();}
